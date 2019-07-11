@@ -153,13 +153,38 @@
                                 }
                             }
 
+                            function loadUsers() {
+								console.log(communities);
+								
+                                var requestObjectStatus = {
+                                    method: 'POST',
+                                    async: true,
+                                    headers: {
+                                        'X-DS-SWYM-CSRFTOKEN': serverToken
+                                    },
+                                    data: {
+                                        params: {
+                                            community_id: '0'
+                                        }
+                                    },
+                                    onComplete: function(response, headers, xhr) {
+                                        var response = JSON.parse(xhr.response);
+
+                                        addImg("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKz8lFeH5srDunEhMS9itFPEJS6NLLdoPIcK57PT3-ojTNwfbGCw", imgContainer);
+                                    }
+                                }
+                                WAFData.authenticatedRequest(swymURL + '/api/community/listmembers', requestObjectStatus);
+
+
+                            }
+
                             var communitySelect = new Select({
                                 custom: false,
                                 placeholder: 'Доступные сообщества',
                                 options: communitiesOptions,
                                 events: {
                                     onChange: function(e) {
-                                        addImg("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKz8lFeH5srDunEhMS9itFPEJS6NLLdoPIcK57PT3-ojTNwfbGCw", imgContainer);
+                                        loadUsers();
                                         console.log(e);
                                     }
                                 }

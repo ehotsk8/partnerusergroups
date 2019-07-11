@@ -160,7 +160,8 @@
                                     method: 'POST',
                                     async: true,
                                     headers: {
-                                        'X-DS-SWYM-CSRFTOKEN': serverToken
+                                        'X-DS-SWYM-CSRFTOKEN': serverToken,
+										'Content-Type': 'application/json'
                                     },
                                     data: {
                                         params: {

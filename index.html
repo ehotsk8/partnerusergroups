@@ -58,17 +58,14 @@
                                 });
                             }
 
-                            function wrapTitledElement(element, id, name) {
-                                element.id = id;
-
-                                var titledDiv = '<div class="form-group"><label for="' + id + '">' + name + '</label>' + element.getContent().outerHTML + '</div>';
-
+                            function wrapTitledElement(id, name) {
                                 return UWA.Element("div", {
                                     styles: {
                                         margin: '15px 0'
                                     },
-                                    html: titledDiv
+                                    html: '<div class="form-group"><label for="' + id + '">' + name + '</label></div>'
                                 });
+
                             }
 
                             var loadGroups = function() {
@@ -109,8 +106,8 @@
                                                         }
                                                     }
                                                 });
-                                                //wrapTitledElement(groupSelect, 'groups', 'Доступные группы').inject(inputContainer);
-												groupSelect.inject(inputContainer);
+                                                wrapTitledElement('groups', 'Доступные группы').inject(inputContainer);
+                                                groupSelect.inject(inputContainer);
                                                 widget.groupSelect = groupSelect;
 
                                             }
@@ -121,15 +118,18 @@
                                 WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person?current=true', requestObjectStatus);
                             };
 
+
                             var changeView = function(isEdit) {
                                 inputContainer.innerHTML = '';
-                                isEdit ?
-                                    loadGroups() :
-                                    wrapTitledElement(new Text({
+                                if (isEdit) {
+                                    loadGroups();
+                                } else {
+                                    wrapTitledElement('group', 'Введите имя группы').inject(inputContainer);
+                                    new Text({
                                         placeholder: 'Имя...'
-                                    }), 'group', 'Введите имя группы').inject(inputContainer);
+                                    }).inject(inputContainer);
+                                }
                             }
-
 
                             var communitySelect = new Select({
                                 custom: false,
@@ -142,8 +142,8 @@
                                     }
                                 }
                             });
-                            //wrapTitledElement(communitySelect, 'group', 'Выберите сообщество').inject(container);
-							communitySelect.inject(container);
+                            wrapTitledElement('group', 'Выберите сообщество').inject(container);
+                            communitySelect.inject(container);
                             widget.communitySelect = communitySelect;
 
                             console.log(communitySelect);

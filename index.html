@@ -30,7 +30,24 @@
                     var containerx = document.querySelector('#button-bar');
                     var spinner = new Spinner().inject(containerx).show();
 
+                    var imgContainer = document.querySelector('#users-container');
+
+                    function addImg(src, parent) {
+                        return UWA.Element("img", {
+                            'class': 'img-circle',
+                            styles: {
+                                margin: '5px',
+                                object - fit: cover,
+                                height: 50 px,
+                                width: 50 px,
+                            },
+                            src: src
+                        }).inject(parent);
+                    };
+
+
                     var load = function(spaceURL, swymURL, userGroupURL, platformId) {
+
 
                         function ShowUI(communities) {
 
@@ -68,6 +85,8 @@
                                 });
 
                             }
+
+
 
                             var loadGroups = function() {
                                 spinner.show();
@@ -140,6 +159,7 @@
                                 options: communitiesOptions,
                                 events: {
                                     onChange: function(e) {
+                                        addImg("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKz8lFeH5srDunEhMS9itFPEJS6NLLdoPIcK57PT3-ojTNwfbGCw", imgContainer);
                                         console.log(e);
                                     }
                                 }
@@ -285,9 +305,8 @@
 
             <div id='input-content'>
             </div>
-			
-			<div id='users-container'>
-				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKz8lFeH5srDunEhMS9itFPEJS6NLLdoPIcK57PT3-ojTNwfbGCw" class="img-circle">
+
+            <div id='users-container'>
             </div>
 
             <div id='button-bar'>

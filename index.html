@@ -25,7 +25,12 @@
 
     <script type="text/javascript">
         function executeWidgetCode() {
-
+			require.config({
+                baseUrl: window.dsDefaultWebappsBaseUrl,
+                paths: {
+                    DS: window.dsDefaultWebappsBaseUrl,
+                }
+            });
             require(['DS/UIKIT/Input/Button', 'DS/UIKIT/Input/Select',
                     'DS/UIKIT/Input/Toggle', 'DS/UIKIT/Input/Select', 'DS/UIKIT/Input/Text',
                     'DS/WAFData/WAFData', 'DS/UIKIT/Spinner'

@@ -41,7 +41,8 @@
                             communities.forEach(function(element) {
                                 communitiesOptions.push({
                                     value: element.subject6wuri,
-                                    label: element.title
+                                    label: element.title,
+									selected: element.title === widget.getValue('DEFAULT_COMMUNITY'),
                                 });
                             });
 
@@ -133,7 +134,6 @@
 
                             var communitySelect = new Select({
                                 custom: false,
-                                // value: widget.getValue('DEFAULT_COMMUNITY'),
                                 placeholder: 'Доступные сообщества',
                                 options: communitiesOptions,
                                 events: {

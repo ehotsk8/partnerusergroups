@@ -42,7 +42,7 @@
                                 communitiesOptions.push({
                                     value: element.subject6wuri,
                                     label: element.title,
-									selected: element.title === widget.getValue('DEFAULT_COMMUNITY'),
+                                    selected: element.title === widget.getValue('DEFAULT_COMMUNITY'),
                                 });
                             });
 
@@ -70,6 +70,8 @@
                             }
 
                             var loadGroups = function() {
+                                spinner.show();
+
                                 var requestObjectStatus = {
                                     method: 'GET',
                                     async: true,
@@ -126,7 +128,7 @@
                                     loadGroups();
                                 } else {
                                     wrapTitledElement('group', 'Введите имя группы').inject(inputContainer);
-                                    new Text({
+                                    widget.groupTextName = new Text({
                                         placeholder: 'Имя...'
                                     }).inject(inputContainer);
                                 }
@@ -162,6 +164,7 @@
                                     }
                                 }
                             }).check().inject(buttonsBar);
+                            widget.changeToggle = changeToggle;
 
                             var button = new Button({
                                 className: 'primary fullwidth',
@@ -170,7 +173,8 @@
 
                             button.addEvent('onClick', function() {
 
-                                console.log(widget.communitySelect.getSelection(), widget.groupSelect.getSelection());
+                                console.log(widget.communitySelect.getValue(),
+                                    widget.changeToggle.isChecked() ? widget.groupSelect.getValue() : widget.groupTextName.getValue());
 
                                 console.log(widget.communities);
                                 console.log(widget.groupsInfo);
@@ -306,7 +310,7 @@
         }
         
         #button-bar {
-		    padding: 10px 0 0 0;
+            padding: 10px 0 0 0;
             text-align: center;
         }
         
@@ -321,10 +325,10 @@
             margin: 50px auto;
             box-shadow: 0 5px 30px #0000002e;
         }
-		
-		.form-group {
-			margin-bottom: 5px;
-		}
+        
+        .form-group {
+            margin-bottom: 5px;
+        }
         
         .form-control {
             color: black !important;

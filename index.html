@@ -45,10 +45,11 @@
                         //     src: src
                         // }).inject(parent);
                         return UWA.Element("div", {
+							'class': 'user',
                             styles: {
-   
+
                             },
-							html: '<img class="img-circle" src="' + src + '" style="margin: 5px; object-fit: cover; height: 50px; width:50px;"/><h4 class="card-title">' + nickname + '</h4>'
+                            html: '<img class="img-circle" src="' + src + '" style="margin: 5px; object-fit: cover; height: 50px; width:50px;"/><h4 class="card-title">' + nickname + '</h4>'
                         }).inject(parent);
                     };
 
@@ -435,6 +436,12 @@
         
         .card {
             margin: 5px -15px 25px -15px !important;
+        }
+        
+        .user {
+            float: left;
+            margin: 5px;
+            display: inline-block;
         }
     </style>
 </body>

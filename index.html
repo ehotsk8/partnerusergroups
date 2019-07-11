@@ -154,7 +154,7 @@
                             }
 
                             function loadUsers() {
-								console.log(serverToken );
+								console.log(communities[4]);
 								
                                 var requestObjectStatus = {
                                     method: 'POST',
@@ -164,7 +164,9 @@
 										'Content-Type': 'application/json'
                                     },
                                     data: {
-                                        community_id: communities[4].id
+                                        params: { 
+										   community_id: communities[4].id
+										}
                                     },
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);

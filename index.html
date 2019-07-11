@@ -57,7 +57,7 @@
 
                             communities.forEach(function(element) {
                                 communitiesOptions.push({
-                                    value: element.subject6wuri,
+                                    value: element.id,
                                     label: element.title,
                                     selected: element.title === widget.getValue('DEFAULT_COMMUNITY'),
                                 });
@@ -164,12 +164,12 @@
                                     },
                                     data: {
                                         params: {
-                                            community_id: '0'
+                                            community_id: communities[4].id
                                         }
                                     },
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
-
+										console.log(response)
                                         addImg("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKz8lFeH5srDunEhMS9itFPEJS6NLLdoPIcK57PT3-ojTNwfbGCw", imgContainer);
                                     }
                                 }

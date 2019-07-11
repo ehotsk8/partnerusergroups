@@ -7,9 +7,9 @@
 
     <meta name="author" content="ARV2" />
 
-  
+
     <script type="text/javascript" src="../AmdLoader/AmdLoader.js"></script>
-	<link rel="stylesheet" type="text/css" href="../UIKIT/UIKIT.css" />
+    <link rel="stylesheet" type="text/css" href="../UIKIT/UIKIT.css" />
 
     <widget:preferences>
         <preference type="hidden" name="SERVER" defaultValue="dspart001-eu1-partners" />
@@ -20,17 +20,18 @@
 
     <script type="text/javascript">
         function executeWidgetCode() {
-			require.config({
+            require.config({
                 baseUrl: window.dsDefaultWebappsBaseUrl,
                 paths: {
                     DS: window.dsDefaultWebappsBaseUrl,
                 }
             });
-            require(['DS/UIKIT/Input/Button', 'DS/UIKIT/Input/Select',
+
+            require(['DS/UIKIT/Input/Button',
                     'DS/UIKIT/Input/Toggle', 'DS/UIKIT/Input/Select', 'DS/UIKIT/Input/Text',
                     'DS/WAFData/WAFData', 'DS/UIKIT/Spinner'
                 ],
-                function(Button, Select, Toggle, Select, Text, WAFData, Spinner) {
+                function(Button, Select, Toggle, Text, WAFData, Spinner) {
 
                     var containerx = document.querySelector('#button-bar');
                     var spinner = new Spinner().inject(containerx).show();
@@ -137,7 +138,7 @@
 
                             var communitySelect = new Select({
                                 custom: false,
-                               // value: widget.getValue('DEFAULT_COMMUNITY'),
+                                // value: widget.getValue('DEFAULT_COMMUNITY'),
                                 placeholder: 'Доступные сообщества',
                                 options: communitiesOptions,
                                 events: {
@@ -150,7 +151,7 @@
                             widget.communitySelect = communitySelect;
 
                             console.log(communitySelect);
-                           // communitySelect.select(widget.getValue('DEFAULT_COMMUNITY'));
+                            // communitySelect.select(widget.getValue('DEFAULT_COMMUNITY'));
 
                             changeView(true);
 

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:widget="http://www.netvibes.com/ns/">
+
+<head>
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="author" content="ARV2" />
+
+  
+    <script type="text/javascript" src="../AmdLoader/AmdLoader.js"></script>
+	    <link rel="stylesheet" type="text/css" href="../c/UWA/assets/css/standalone.css" />
+    <script type="text/javascript" src="../c/UWA/js/UWA_Standalone_Alone.js"></script>
+    <script type="text/javascript" src="../WebappsUtils/WebappsUtils.js"></script>
+  <link rel="stylesheet" type="text/css" href="../UIKIT/UIKIT.css" />
+	
+    <script type="text/javascript" src="../UIKIT/UIKIT.js"></script>
+	
+    <widget:preferences>
+        <preference type="hidden" name="SERVER" defaultValue="dspart001-eu1-partners" />
+        <preference type="hidden" name="CHANNEL" defaultValue="dsrussiatechclub" />
+        <preference type="hidden" name="DEFAULT_COMMUNITY" defaultValue="DS RUSSIA TECH CLUB" />
+        <preference type="hidden" name="SPACE_URL" defaultValue="https://eu1-partners-apps.3dexperience.3ds.com/enovia" />
+    </widget:preferences>
+
+    <script type="text/javascript">
+        function executeWidgetCode() {
+
+            //require.config({
+            //    baseUrl: window.dsDefaultWebappsBaseUrl,
+            //    paths: {
+            //        DS: window.dsDefaultWebappsBaseUrl,
+            //    }
+            //});
+
+            require(['DS/UIKIT/Input/Button', 'DS/UIKIT/Input/Select',
+                    'DS/UIKIT/Input/Toggle', 'DS/UIKIT/Input/Select', 'DS/UIKIT/Input/Text',
+                    'DS/WAFData/WAFData', 'DS/UIKIT/Spinner'
+                ],
+                function(Button, Select, Toggle, Select, Text, WAFData, Spinner) {
+
+                    var containerx = document.querySelector('#button-bar');
+                    var spinner = new Spinner().inject(containerx).show();
+
+                    var load = function(spaceURL, swymURL, userGroupURL, platformId) {
+
+                        function ShowUI(communities) {
+
+                            widget.communities = communities;
+
+                            var communitiesOptions = [];
+
+                            communities.forEach(function(element) {
+                                communitiesOptions.push({
+                                    value: element.subject6wuri,
+                                    label: element.title
+                                });
+                            });
+
+                            var container = document.querySelector('#content-container');
+                            var inputContainer = document.querySelector('#input-content');
+                            var buttonsBar = document.querySelector('#button-bar');
+
+                            function wrapElement(element) {
+                                return UWA.Element("div", {
+                                    styles: {
+                                        margin: '15px 0'
+                                    },
+                                    html: element
+                                });
+                            }
+
+                            function wrapTitledElement(element, id, name) {
+                                element.id = id;
+
+                                var titledDiv = '<div class="form-group"><label for="' + id + '">' + name + '</label>' + element.getContent().outerHTML + '</div>';
+
+                                return UWA.Element("div", {
+                                    styles: {
+                                        margin: '15px 0'
+                                    },
+                                    html: titledDiv
+                                });
+                            }
+
+                            var loadGroups = function() {
+                                var requestObjectStatus = {
+                                    method: 'GET',
+                                    async: true,
+                                    onComplete: function(response, headers, xhr) {
+                                        var response = JSON.parse(xhr.response);
+                                        var userGroupByUserQuery = userGroupURL + '/3drdfpersist/v0/classes/foaf:Group?tenant=dstenant:' +
+                                            platformId + '&$mask=dsaccess:Mask.GroupUI.Properties&$orderby=name&$where=?x where %7B ?x dskern:owner iam:' +
+                                            response.name + ' %7D';
+
+                                        var requestObjectStatusx = {
+                                            method: 'GET',
+                                            async: true,
+                                            onComplete: function(response, headers, xhr) {
+                                                var response = JSON.parse(xhr.response);
+
+                                                spinner.hide();
+
+                                                widget.groupsInfo = response;
+
+                                                var groupList = [];
+                                                response.member.forEach(function(element) {
+                                                    groupList.push({
+                                                        value: element['@id'],
+                                                        label: element.name
+                                                    });
+                                                });
+
+                                                var groupSelect = new Select({
+                                                    custom: true,
+                                                    placeholder: 'Выберите группу',
+                                                    options: groupList,
+                                                    events: {
+                                                        onChange: function(e) {
+                                                            console.log(e);
+                                                        }
+                                                    }
+                                                });
+                                                wrapTitledElement(groupSelect, 'groups', 'Доступные группы').inject(inputContainer);
+                                                widget.groupSelect = groupSelect;
+
+                                            }
+                                        }
+                                        WAFData.authenticatedRequest(userGroupByUserQuery, requestObjectStatusx);
+                                    }
+                                }
+                                WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person?current=true', requestObjectStatus);
+                            };
+
+                            var changeView = function(isEdit) {
+                                inputContainer.innerHTML = '';
+
+                                isEdit ?
+                                    loadGroups() :
+                                    wrapTitledElement(new Text({
+                                        placeholder: 'Имя...'
+                                    }), 'group', 'Введите имя группы').inject(inputContainer);
+                            }
+
+
+                            var communitySelect = new Select({
+                                custom: true,
+                               // value: widget.getValue('DEFAULT_COMMUNITY'),
+                                placeholder: 'Доступные сообщества',
+                                options: communitiesOptions,
+                                events: {
+                                    onChange: function(e) {
+                                        console.log(e);
+                                    }
+                                }
+                            });
+                            wrapTitledElement(communitySelect, 'group', 'Выберите сообщество').inject(container);
+                            widget.communitySelect = communitySelect;
+
+                            console.log(communitySelect);
+                           // communitySelect.select(widget.getValue('DEFAULT_COMMUNITY'));
+
+                            changeView(true);
+
+                            var changeToggle = new Toggle({
+                                type: 'switch',
+                                value: 'change',
+                                label: 'Изменить существующую группу',
+                                events: {
+                                    onChange: function() {
+                                        changeView(changeToggle.isChecked());
+                                        button.setValue(changeToggle.isChecked() ? 'Изменить группу' : 'Создать группу');
+                                    }
+                                }
+                            }).check().inject(buttonsBar);
+
+                            var button = new Button({
+                                className: 'primary fullwidth',
+                                value: 'Изменить группу'
+                            })
+
+                            button.addEvent('onClick', function() {
+
+                                console.log(widget.communitySelect.getValue(), widget.groupSelect.getValue());
+
+                                console.log(widget.communities);
+                                console.log(widget.groupsInfo);
+
+
+                            });
+
+                            wrapElement(button).inject(buttonsBar);
+
+                        }
+
+                        function loadWithCommunities(serverToken) {
+                            var requestObjectStatus = {
+                                method: 'GET',
+                                async: true,
+                                headers: {
+                                    'X-DS-SWYM-CSRFTOKEN': serverToken
+                                },
+                                onComplete: function(response, headers, xhr) {
+                                    var response = JSON.parse(xhr.response);
+
+                                    ShowUI(response.result);
+                                }
+                            }
+                            WAFData.authenticatedRequest(swymURL + '/api/community/listmycommunities', requestObjectStatus);
+                        }
+
+                        var requestObjectStatus = {
+                            method: 'GET',
+                            async: true,
+                            onComplete: function(response, headers, xhr) {
+                                response = JSON.parse(response);
+                                loadWithCommunities(response.result.ServerToken);
+                            }
+                        }
+                        WAFData.authenticatedRequest(swymURL + '/api/index/tk', requestObjectStatus);
+
+
+                    };
+
+                    var requestObjectStatus = {
+                        method: 'GET',
+                        async: true,
+                        onComplete: function(response, headers, xhr) {
+                            response = JSON.parse(response);
+                            var platformId = response.platforms[0].id;
+                            var spaceURL = '';
+                            var swymURL = '';
+                            var userGroupURL = '';
+
+                            response = response.platforms[0].services;
+                            response.forEach(function(element) {
+                                if (element.name === '3DSpace')
+                                    spaceURL = element.url;
+
+                                if (element.name === '3DSwym')
+                                    swymURL = element.url;
+
+                                if (element.name === 'usersgroup')
+                                    userGroupURL = element.url;
+                            });
+
+                            load(spaceURL, swymURL, userGroupURL, platformId);
+
+                        },
+                        onFailed: function(e) {
+                            console.log(e);
+                        }
+                    }
+                    WAFData.authenticatedRequest(widget.getValue('SPACE_URL') + '/resources/AppsMngt/api/v1/services', requestObjectStatus);
+
+                }
+            );
+        }
+
+
+        function widgetLoading() {
+            if (widget) {
+                executeWidgetCode();
+            } else {
+                setTimeout(widgetLoading, 100);
+            }
+        }
+        widgetLoading();
+    </script>
+
+</head>
+
+<body>
+    <div id="divPageBody">
+
+        <div id='main' style='display: block'>
+
+            <div id='shadow-container'>
+
+                <div id='main-classsify' class="container-fluid">
+                    <div class="row">
+                        <div class="col-ld-10">
+                            <h3 class='header-title'>Редактор UserGroups</h3>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id='content-container'>
+            </div>
+
+            <div id='input-content'>
+            </div>
+
+            <div id='button-bar'>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <style>
+        body {
+            overflow: hidden;
+            padding: 0 !important;
+        }
+        
+        #divPageBody {
+            top: 0 !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            position: absolute !important;
+            overflow: scroll;
+        }
+        
+        #button-bar {
+            text-align: center;
+        }
+        
+        #main-classsify__buttons {
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        #main {
+            width: 70%;
+            padding: 10px 43px;
+            margin: 50px auto;
+            box-shadow: 0 5px 30px #0000002e;
+        }
+        
+        .form-control {
+            color: black !important;
+        }
+        
+        .fullwidth {
+            width: 100%;
+            margin: 25px 0 !important;
+        }
+        
+        .header-title {
+            color: #005686;
+            padding: 8px 0;
+            font-size: 40px;
+            margin: 30px auto;
+            text-align: center;
+        }
+        
+        .header-subtitle {
+            padding: 15px 0;
+        }
+        
+        .required-text {
+            color: #db4437;
+            font-size: 10px;
+        }
+        
+        .required {
+            color: #db4437;
+        }
+        
+        .container-fluid {
+            padding: 0 20px !important;
+        }
+        
+        .btn {
+            margin: 0 5px;
+        }
+        
+        .card {
+            margin: 5px -15px 25px -15px !important;
+        }
+    </style>
+</body>
+
+</html>

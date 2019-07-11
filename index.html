@@ -20,12 +20,6 @@
 
     <script type="text/javascript">
         function executeWidgetCode() {
-            require.config({
-                baseUrl: window.dsDefaultWebappsBaseUrl,
-                paths: {
-                    DS: window.dsDefaultWebappsBaseUrl,
-                }
-            });
 
             require(['DS/UIKIT/Input/Button', 'DS/UIKIT/Input/Select',
                     'DS/UIKIT/Input/Toggle', 'DS/UIKIT/Input/Text',
@@ -115,7 +109,8 @@
                                                         }
                                                     }
                                                 });
-                                                wrapTitledElement(groupSelect, 'groups', 'Доступные группы').inject(inputContainer);
+                                                //wrapTitledElement(groupSelect, 'groups', 'Доступные группы').inject(inputContainer);
+												groupSelect.inject(inputContainer);
                                                 widget.groupSelect = groupSelect;
 
                                             }
@@ -147,7 +142,8 @@
                                     }
                                 }
                             });
-                            wrapTitledElement(communitySelect, 'group', 'Выберите сообщество').inject(container);
+                            //wrapTitledElement(communitySelect, 'group', 'Выберите сообщество').inject(container);
+							communitySelect.inject(container);
                             widget.communitySelect = communitySelect;
 
                             console.log(communitySelect);

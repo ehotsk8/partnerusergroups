@@ -32,7 +32,7 @@
 
                     var imgContainer = document.querySelector('#users-container');
 
-                    function addImg(src, parent) {
+                    function addImg(src, nickname, parent) {
                         return UWA.Element("img", {
                             'class': 'img-circle',
                             styles: {
@@ -40,6 +40,7 @@
                                 'object - fit': 'cover',
                                 height: '50px',
                                 width: '50px',
+								html: '<h4 class="card-title">' + nickname + '</h4>'
                             },
                             src: src
                         }).inject(parent);
@@ -171,7 +172,11 @@
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
 										console.log(response)
-                                        addImg("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKz8lFeH5srDunEhMS9itFPEJS6NLLdoPIcK57PT3-ojTNwfbGCw", imgContainer);
+										
+										response.result.forEach(function(user) {
+										    addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer);
+										});
+										
                                     },
 									onFailed: function(e){
 										console.log(e);

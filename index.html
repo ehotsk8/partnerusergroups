@@ -33,16 +33,22 @@
                     var imgContainer = document.querySelector('#users-container');
 
                     function addImg(src, nickname, parent) {
-                        return UWA.Element("img", {
-                            'class': 'img-circle',
+                        // return UWA.Element("img", {
+                        //     'class': 'img-circle',
+                        //     styles: {
+                        //         margin: '5px',
+                        //         'object - fit': 'cover',
+                        //         height: '50px',
+                        //         width: '50px',
+                        //         html: '<h4 class="card-title">' + nickname + '</h4>'
+                        //     },
+                        //     src: src
+                        // }).inject(parent);
+                        return UWA.Element("div", {
                             styles: {
-                                margin: '5px',
-                                'object - fit': 'cover',
-                                height: '50px',
-                                width: '50px',
-								html: '<h4 class="card-title">' + nickname + '</h4>'
+   
                             },
-                            src: src
+							html: '<img class="img-circle" src="' + src + '" style="margin: 5px; object-fit: cover; height: 50px; width:50px;"/><h4 class="card-title">' + nickname + '</h4>'
                         }).inject(parent);
                     };
 
@@ -155,32 +161,33 @@
                             }
 
                             function loadUsers() {
-								console.log(communities[4]);
-								
+                                console.log(communities[4]);
+
                                 var requestObjectStatus = {
                                     method: 'POST',
                                     async: true,
                                     headers: {
                                         'X-DS-SWYM-CSRFTOKEN': serverToken,
-										'Content-Type': 'application/json'
+                                        'Content-Type': 'application/json'
                                     },
                                     data: JSON.stringify({
-                                        params: { 
-										   community_id: communities[4].id
-										}
+                                        params: {
+                                            community_id: communities[4].id,
+                                            limit: 128,
+                                        }
                                     }),
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
-										console.log(response)
-										
-										response.result.forEach(function(user) {
-										    addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer);
-										});
-										
+                                        console.log(response)
+
+                                        response.result.forEach(function(user) {
+                                            addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer);
+                                        });
+
                                     },
-									onFailed: function(e){
-										console.log(e);
-									}
+                                    onFailed: function(e) {
+                                        console.log(e);
+                                    }
                                 }
                                 WAFData.authenticatedRequest(swymURL + '/api/community/listmembers', requestObjectStatus);
 

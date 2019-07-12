@@ -224,7 +224,8 @@
                                 spinner.show();
 
                                 var allUsers = [];
-								var pageIndex = 1;
+								var limit = 128;
+								var pageIndex = limit;
 								
                                 function getAllUsers(id) {
                                     var requestLoadCommunityUsers = {
@@ -238,14 +239,14 @@
                                             params: {
                                                 community_id: id,
 												page: pageIndex,
-                                                limit: 128, //LIMIT????????????????????????????????????
+                                                limit: limit, //LIMIT????????????????????????????????????
                                             }
                                         }),
                                         onComplete: function(response, headers, xhr) {
 										    var response = JSON.parse(xhr.response);
 											if(response.result.length > 0) {
 												allUsers.concat(response.result);
-												pageIndex += 128;
+												pageIndex += limit;
 												getAllUsers(id, pageIndex);
 												console.log(response);
 											}

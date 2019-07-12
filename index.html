@@ -44,13 +44,21 @@
                         //     },
                         //     src: src
                         // }).inject(parent);
+                        var styleKO = {
+                            border: "solid 2px red";
+                            background: "#fff1f1";
+                        };
+                        var styleOK = {
+                            border: "solid 2px #00ffb7";
+                            background: "#e7fff8";
+                        };
                         return UWA.Element("div", {
-							'class': 'user',
-                            styles: {
-
-                            },
+                            'class': 'user',
+                            styles: styleOK,
                             html: '<img class="img-circle" src="' + src + '" style="margin: 5px; object-fit: cover; height: 50px; width:50px;"/><h4 class="card-title">' + nickname + '</h4>'
                         }).inject(parent);
+
+
                     };
 
 
@@ -94,8 +102,6 @@
 
                             }
 
-
-
                             var loadGroups = function() {
                                 spinner.show();
 
@@ -113,6 +119,8 @@
                                             async: true,
                                             onComplete: function(response, headers, xhr) {
                                                 var response = JSON.parse(xhr.response);
+
+                                                console.log(response);
 
                                                 spinner.hide();
 
@@ -161,8 +169,8 @@
                                 }
                             }
 
-                            function loadUsers() {
-                                console.log(communities[4]);
+                            function loadUsers(id) {
+                                if (id === undefined && id === '') return;
 
                                 var requestObjectStatus = {
                                     method: 'POST',
@@ -173,7 +181,7 @@
                                     },
                                     data: JSON.stringify({
                                         params: {
-                                            community_id: communities[4].id,
+                                            community_id: id,
                                             limit: 128,
                                         }
                                     }),
@@ -201,7 +209,7 @@
                                 options: communitiesOptions,
                                 events: {
                                     onChange: function(e) {
-                                        loadUsers();
+                                        loadUsers(widget.communitySelect.getValue()[0]);
                                         console.log(e);
                                     }
                                 }
@@ -209,6 +217,8 @@
                             wrapTitledElement('group', 'Выберите сообщество').inject(container);
                             communitySelect.inject(container);
                             widget.communitySelect = communitySelect;
+
+                            loadUsers(widget.communitySelect.getValue()[0]);
 
                             console.log(communitySelect);
                             // communitySelect.select(widget.getValue('DEFAULT_COMMUNITY'));
@@ -439,9 +449,15 @@
         }
         
         .user {
-            float: left;
+            /* float: left; */
             margin: 5px;
             display: inline-block;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+        .card-title {
+            color: #272727;
         }
     </style>
 </body>

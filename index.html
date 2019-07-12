@@ -188,8 +188,11 @@
                                                         onChange: function(e) {
 															console.log(groupSelect.getValue(), widget.communitySelect.getValue());
 														    var selectedUserGroupId = groupSelect.getValue()[0];
-															if(selectedUserGroupId !== '')
+															if(selectedUserGroupId !== ''){
+																console.log(groupSelect.getValue());
 																loadGroupUsers();
+															}
+																
                                                         }
                                                     }
                                                 });

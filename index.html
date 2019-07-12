@@ -252,7 +252,7 @@
 											console.log(response);
 
 											if(response.result.length > 0) {
-												widget.communityUsers.push(...response.result);
+												Array.prototype.push.apply(widget.communityUsers, response.result);
 												getAllUsers(id, ++pageIndex);
 											}else {
 												isEnd = true;

@@ -130,10 +130,6 @@
                                                         var userGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
                                                             selectedUserGroupId + '/groupMembers?tenant=dstenant:' +
                                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999';
-														
-														console.log('wtf 2')
-
-														
 															
                                                         var requestUsers = {
                                                             method: 'GET',
@@ -142,7 +138,7 @@
                                                                 var response = JSON.parse(response);
 																var notExistedUsersCount = 0;
 																
-																console.log('wtf', response);
+																console.log('wtf', widget.communityUsers,  response.member);
 
 																imgContainer.innerHTML = '';
 																

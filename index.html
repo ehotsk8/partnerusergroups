@@ -347,7 +347,7 @@
 								widget.groupSelect.disable();
 
                                 var addGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
-                                    widget.selectedUserGroupId + '?$mask=dsaccess:Mask.GroupUI.Members&$skip=0&$top=9999&tenant=dstenant:' +
+                                    widget.selectedUserGroupId + '?$mask=dsaccess:Mask.GroupUI.Members&tenant=dstenant:' +
                                     platformId;
 
                                 var userGroupItems = [];
@@ -361,6 +361,8 @@
                                         }
 									});
                                 });
+								
+								widget.communityUsersWithoutGroup.splice(0, 50);
 
                                 var requestAddGroupUsers = {
                                     method: 'PATCH',

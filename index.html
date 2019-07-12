@@ -186,10 +186,10 @@
                                                     options: groupList,
                                                     events: {
                                                         onChange: function(e) {
-															console.log(groupSelect.getValue());
-														    //var selectedUserGroupId = widget.groupSelect.getValue()[0];
-															//if(selectedUserGroupId !== '')
-															//	loadGroupUsers();
+															console.log(groupSelect.getValue(), );
+														    var selectedUserGroupId = groupSelect.getValue()[0];
+															if(selectedUserGroupId !== '')
+																loadGroupUsers();
                                                         }
                                                     }
                                                 });
@@ -237,7 +237,6 @@
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
                                         widget.communityUsers = response.result;
-
                                     },
                                     onFailed: function(e) {
                                         console.log(e);
@@ -260,8 +259,6 @@
 										var usersElement = document.querySelector('#users-container');
 										usersElement.style.display = 'none';
 										widget.groupSelect.select(0);
-										
-                                        console.log(e, index);
                                     }
                                 }
                             });

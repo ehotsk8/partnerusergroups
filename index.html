@@ -186,7 +186,7 @@
                                                     options: groupList,
                                                     events: {
                                                         onChange: function(e) {
-															console.log(groupSelect.getValue(), );
+															console.log(groupSelect.getValue(), widget.communitySelect.getValue());
 														    var selectedUserGroupId = groupSelect.getValue()[0];
 															if(selectedUserGroupId !== '')
 																loadGroupUsers();
@@ -252,7 +252,8 @@
                                 events: {
                                     onChange: function(e, index) {
 										widget.communityUsers  = [];
-										
+										widget.communitySelect = communitySelect;
+
                                         loadUsers(communitySelect.getValue()[0]);
                                         widget.selectedCommunity = communitySelect.getValue()[0];
 										

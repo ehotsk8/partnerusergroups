@@ -32,18 +32,7 @@
 
                     var imgContainer = document.querySelector('#users-container');
 
-                    function addImg(src, nickname, parent) {
-                        // return UWA.Element("img", {
-                        //     'class': 'img-circle',
-                        //     styles: {
-                        //         margin: '5px',
-                        //         'object - fit': 'cover',
-                        //         height: '50px',
-                        //         width: '50px',
-                        //         html: '<h4 class="card-title">' + nickname + '</h4>'
-                        //     },
-                        //     src: src
-                        // }).inject(parent);
+                    function addImg(src, nickname, parent, isExist) {
                         var styleKO = {
                             border: "solid 2px red",
                             background: "#fff1f1"
@@ -54,13 +43,12 @@
                         };
                         return UWA.Element("div", {
                             'class': 'user',
-                            styles: styleOK,
+                            styles: isExist ? styleOK : styleKO,
                             html: '<img class="img-circle" src="' + src + '" style="margin: 5px; object-fit: cover; height: 50px; width:50px;"/><h4 class="card-title">' + nickname + '</h4>'
                         }).inject(parent);
-
-
                     };
 
+					
 
                     var load = function(spaceURL, swymURL, userGroupURL, platformId) {
 
@@ -134,12 +122,31 @@
                                                     });
                                                 });
 
+												function loadGroupUsers() {
+													if(widget.changeToggle.isChecked()) {
+														var selectedUserGroupId = widget.groupSelect.getValue()[0];
+														
+														widget.communityUsers.forEach(function(user) {
+															addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, true);
+														});
+														
+													}else {
+														// CREATE USER GROUP
+														//widget.groupTextName.getValue();
+													}
+													
+													//https://dspart001-eu1-partners-usersgroup.3dexperience.3ds.com/3drdfpersist/v0/resources/uuid:08fcc178-d75f-43c0-885c-ab12115a8ff3/groupMembers?tenant=dstenant:DSPART001&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999
+
+													//widget.selectedCommunity
+												}
+												
                                                 var groupSelect = new Select({
                                                     custom: false,
                                                     placeholder: 'Выберите группу',
                                                     options: groupList,
                                                     events: {
                                                         onChange: function(e) {
+															loadGroupUsers();
                                                             console.log(e);
                                                         }
                                                     }
@@ -182,16 +189,17 @@
                                     data: JSON.stringify({
                                         params: {
                                             community_id: id,
-                                            limit: 128,
+                                            limit: 128, //LIMIT????????????????????????????????????
                                         }
                                     }),
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
                                         console.log(response)
-
-                                        response.result.forEach(function(user) {
-                                            addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer);
-                                        });
+										widget.communityUsers = response.result;
+										
+                                        //response.result.forEach(function(user) {
+                                        //    addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer);
+                                        //});
 
                                     },
                                     onFailed: function(e) {
@@ -209,14 +217,17 @@
                                 options: communitiesOptions,
                                 events: {
                                     onChange: function(e) {
-                                        loadUsers(communitySelect.getValue()[0]);
-                                        console.log(e);
+                                       loadUsers(communitySelect.getValue()[0]);
+									   widget.selectedCommunity = communitySelect.getValue()[0];
+                                       console.log(e);
                                     }
                                 }
                             });
                             wrapTitledElement('group', 'Выберите сообщество').inject(container);
                             communitySelect.inject(container);
                             widget.communitySelect = communitySelect;
+							
+							widget.selectedCommunity = communitySelect.getValue()[0];
 
                             loadUsers(communitySelect.getValue()[0]);
 

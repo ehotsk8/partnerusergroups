@@ -137,7 +137,6 @@
                                                             onComplete: function(response, headers, xhr) {
                                                                 var response = JSON.parse(response);
 																var notExistedUsersCount = 0;
-																
                                                                 console.log(response, widget.communityUsers)
 
 																imgContainer.innerHTML = '';
@@ -232,13 +231,18 @@
                                     data: JSON.stringify({
                                         params: {
                                             community_id: id,
-                                            limit: 9999, //LIMIT????????????????????????????????????
+                                            limit: 128, //LIMIT????????????????????????????????????
                                         }
                                     }),
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
                                         console.log(response)
                                         widget.communityUsers = response.result;
+
+                                        //response.result.forEach(function(user) {
+                                        //    addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer);
+                                        //});
+
                                     },
                                     onFailed: function(e) {
                                         console.log(e);
@@ -254,10 +258,7 @@
                                 placeholder: 'Доступные сообщества',
                                 options: communitiesOptions,
                                 events: {
-                                    onChange: function(e, i) {
-										
-										widget.communityUsers  = [];
-										
+                                    onChange: function(e) {
                                         loadUsers(communitySelect.getValue()[0]);
                                         widget.selectedCommunity = communitySelect.getValue()[0];
 										
@@ -265,7 +266,7 @@
 										usersElement.style.display = 'none';
 										widget.groupSelect.select(0);
 										
-                                        console.log(e, i);
+                                        console.log(e);
                                     }
                                 }
                             });

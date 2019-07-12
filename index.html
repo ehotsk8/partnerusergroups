@@ -134,8 +134,17 @@
                                                             method: 'GET',
                                                             async: true,
                                                             onComplete: function(response, headers, xhr) {
-															
+															    var response = JSON.parse(response);
+															   
+																console.log(response,  widget.communityUsers)
+																
+																
+																
                                                                 widget.communityUsers.forEach(function(user) {
+																
+																	//var existedUser = response.member.filter(function(groupUser) {
+																		
+																	//});
                                                                     addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, true);
                                                                 });
 																

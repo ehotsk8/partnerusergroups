@@ -129,9 +129,9 @@
                                                 });
 
                                                 function loadGroupUsers(groupSelect) {
-													
-													widget.communityUsersWithoutGroup = [];
-													
+
+                                                    widget.communityUsersWithoutGroup = [];
+
                                                     if (widget.changeToggle.isChecked()) {
                                                         var selectedUserGroupId = groupSelect.getValue()[0];
                                                         widget.selectedUserGroupId = selectedUserGroupId;
@@ -159,9 +159,9 @@
 
                                                                         if (!isUserExist) {
                                                                             notExistedUsersCount++;
-																			widget.communityUsersWithoutGroup.push(user);
-																		}
-																		
+                                                                            widget.communityUsersWithoutGroup.push(user);
+                                                                        }
+
                                                                         addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
                                                                     }
                                                                 });
@@ -228,16 +228,16 @@
                                     }).inject(inputContainer);
                                 }
                             }
-							
+
 
 
                             function loadUsers(id) {
                                 if (id === undefined && id === '') return;
-								
-								widget.communitySelect.disable();
-								
+
+                                widget.communitySelect.disable();
+
                                 widget.communityUsers = [];
-								
+
                                 inputContainer.style.display = 'none';
                                 spinner.show();
 
@@ -269,13 +269,13 @@
                                             if (response.result.length > 0) {
                                                 if (statusLoading.isHidden())
                                                     statusLoading.show();
-												
+
                                                 statusLoading.innerHTML = 'Загружено ' + (pageIndex * limit) + ' из ' + response.nb_result;
                                                 Array.prototype.push.apply(widget.communityUsers, response.result);
                                                 getAllUsers(id, ++pageIndex);
                                             } else {
-												widget.communitySelect.enable();
-												
+                                                widget.communitySelect.enable();
+
                                                 isEnd = true;
                                                 spinner.hide();
                                                 statusLoading.hide();
@@ -290,39 +290,8 @@
                                 }
 
 
-                                //widget.communityUsers = getAllUsers(id);
                                 getAllUsers(id, 1);
                                 console.log(widget.communityUsers);
-
-
-                                // var requestLoadCommunityUsers = {
-                                //     method: 'POST',
-                                //     async: true,
-                                //     headers: {
-                                //         'X-DS-SWYM-CSRFTOKEN': serverToken,
-                                //         'Content-Type': 'application/json'
-                                //     },
-                                //     data: JSON.stringify({
-                                //         params: {
-                                //             community_id: id,
-                                //             limit: 128, //LIMIT????????????????????????????????????
-                                //         }
-                                //     }),
-                                //     onComplete: function(response, headers, xhr) {
-                                //         var response = JSON.parse(xhr.response);
-                                //         console.log(response)
-
-                                //         spinner.hide();
-                                //         inputContainer.style.display = 'block';
-
-                                //         widget.communityUsers = response.result;
-                                //     },
-                                //     onFailed: function(e) {
-                                //         console.log(e);
-                                //     }
-                                // }
-                                // WAFData.authenticatedRequest(swymURL + '/api/community/listmembers', requestLoadCommunityUsers);
-
 
                             }
 
@@ -370,8 +339,43 @@
                             })
 
                             button.addEvent('onClick', function() {
-							// -----------------------------------------------------------
-								console.log(widget.communityUsersWithoutGroup);
+                                // -----------------------------------------------------------
+                                console.log(widget.communityUsersWithoutGroup);
+
+                                var addGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
+                                    widget.selectedUserGroupId + '?$mask=dsaccess:Mask.GroupUI.Members&tenant=dstenant:' +
+                                    platformId;
+
+                                var requestAddGroupUsers = {
+                                    method: 'PATCH',
+                                    async: true,
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    data: JSON.stringify(
+                                        [{
+                                            "op": "add",
+                                            "path": "/groupMembers",
+                                            "value": {
+                                                "@id": "iam:efv"
+                                            }
+                                        }, {
+                                            "op": "add",
+                                            "path": "/groupMembers",
+                                            "value": {
+                                                "@id": "iam:nfa1"
+                                            }
+                                        }]
+                                    ),
+                                    onComplete: function(response, headers, xhr) {
+
+                                    },
+                                    onFailed: function(e) {
+                                        console.log(e);
+                                    }
+                                }
+                                WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
+
 
                             });
 

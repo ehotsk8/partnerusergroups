@@ -236,6 +236,7 @@
                                     }),
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
+										console.log(response.result)
                                         widget.communityUsers = response.result;
                                     },
                                     onFailed: function(e) {
@@ -252,11 +253,9 @@
                                 events: {
                                     onChange: function(e, index) {
 										//widget.communityUsers  = [];
-										widget.communitySelect = communitySelect;
 
                                         loadUsers(communitySelect.getValue()[0]);
-                                        widget.selectedCommunity = communitySelect.getValue()[0];
-										
+
 										var usersElement = document.querySelector('#users-container');
 										usersElement.style.display = 'none';
 										widget.groupSelect.select(0);
@@ -266,8 +265,6 @@
                             wrapTitledElement('group', 'Выберите сообщество').inject(container);
                             communitySelect.inject(container);
                             widget.communitySelect = communitySelect;
-
-                            widget.selectedCommunity = communitySelect.getValue()[0];
 
                             loadUsers(communitySelect.getValue()[0]);
 

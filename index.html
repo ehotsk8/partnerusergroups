@@ -48,7 +48,7 @@
                         }).inject(parent);
                     };
 
-					
+
 
                     var load = function(spaceURL, swymURL, userGroupURL, platformId) {
 
@@ -122,31 +122,47 @@
                                                     });
                                                 });
 
-												function loadGroupUsers() {
-													if(widget.changeToggle.isChecked()) {
-														var selectedUserGroupId = widget.groupSelect.getValue()[0];
-														
-														widget.communityUsers.forEach(function(user) {
-															addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, true);
-														});
-														
-													}else {
-														// CREATE USER GROUP
-														//widget.groupTextName.getValue();
-													}
-													
-													//https://dspart001-eu1-partners-usersgroup.3dexperience.3ds.com/3drdfpersist/v0/resources/uuid:08fcc178-d75f-43c0-885c-ab12115a8ff3/groupMembers?tenant=dstenant:DSPART001&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999
+                                                function loadGroupUsers() {
+                                                    if (widget.changeToggle.isChecked()) {
+                                                        var selectedUserGroupId = widget.groupSelect.getValue()[0];
 
-													//widget.selectedCommunity
-												}
-												
+                                                        var userGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
+                                                            selectedUserGroupId + '/groupMembers?tenant=dstenant:' +
+                                                            platformId + '&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999';
+
+                                                        var requestUsers = {
+                                                            method: 'GET',
+                                                            async: true,
+                                                            onComplete: function(response, headers, xhr) {
+															
+                                                                widget.communityUsers.forEach(function(user) {
+                                                                    addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, true);
+                                                                });
+																
+                                                            },
+                                                            onFailed: function(e) {
+                                                                console.log(e);
+                                                            }
+                                                        }
+                                                        WAFData.authenticatedRequest(userGroupUsersQuery, requestUsers);
+
+                                                    } else {
+                                                        // CREATE USER GROUP
+                                                        //widget.groupTextName.getValue();
+                                                    }
+
+                                                    //https://dspart001-eu1-partners-usersgroup.3dexperience.3ds.com/3drdfpersist/v0/resources/uuid:08fcc178-d75f-43c0-885c-ab12115a8ff3/groupMembers?tenant=dstenant:DSPART001&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999
+
+                                                    //widget.selectedCommunity
+                                                }
+
                                                 var groupSelect = new Select({
                                                     custom: false,
                                                     placeholder: 'Выберите группу',
                                                     options: groupList,
                                                     events: {
                                                         onChange: function(e) {
-															loadGroupUsers();
+                                                            loadGroupUsers();
                                                             console.log(e);
                                                         }
                                                     }
@@ -195,8 +211,8 @@
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
                                         console.log(response)
-										widget.communityUsers = response.result;
-										
+                                        widget.communityUsers = response.result;
+
                                         //response.result.forEach(function(user) {
                                         //    addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer);
                                         //});
@@ -217,17 +233,17 @@
                                 options: communitiesOptions,
                                 events: {
                                     onChange: function(e) {
-                                       loadUsers(communitySelect.getValue()[0]);
-									   widget.selectedCommunity = communitySelect.getValue()[0];
-                                       console.log(e);
+                                        loadUsers(communitySelect.getValue()[0]);
+                                        widget.selectedCommunity = communitySelect.getValue()[0];
+                                        console.log(e);
                                     }
                                 }
                             });
                             wrapTitledElement('group', 'Выберите сообщество').inject(container);
                             communitySelect.inject(container);
                             widget.communitySelect = communitySelect;
-							
-							widget.selectedCommunity = communitySelect.getValue()[0];
+
+                            widget.selectedCommunity = communitySelect.getValue()[0];
 
                             loadUsers(communitySelect.getValue()[0]);
 

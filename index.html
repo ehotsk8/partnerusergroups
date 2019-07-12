@@ -259,9 +259,11 @@
 									return allUsers;
                                 }
 								
+								
+								widget.communityUsers = getAllUsers(id);
+								console.log(allUsers);
 								spinner.hide();
 								inputContainer.style.display = 'block';
-								widget.communityUsers = getAllUsers(id);
 								
                                 // var requestLoadCommunityUsers = {
                                 //     method: 'POST',

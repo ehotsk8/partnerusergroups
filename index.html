@@ -223,33 +223,74 @@
                                 inputContainer.style.display = 'none';
                                 spinner.show();
 
-                                var requestLoadCommunityUsers = {
-                                    method: 'POST',
-                                    async: true,
-                                    headers: {
-                                        'X-DS-SWYM-CSRFTOKEN': serverToken,
-                                        'Content-Type': 'application/json'
-                                    },
-                                    data: JSON.stringify({
-                                        params: {
-                                            community_id: id,
-                                            limit: 128, //LIMIT????????????????????????????????????
+                                var allUsers = [];
+								var pageIndex = 1;
+								
+                                function getAllUsers(id) {
+                                    var requestLoadCommunityUsers = {
+                                        method: 'POST',
+                                        async: true,
+                                        headers: {
+                                            'X-DS-SWYM-CSRFTOKEN': serverToken,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        data: JSON.stringify({
+                                            params: {
+                                                community_id: id,
+												page: pageIndex,
+                                                limit: 128, //LIMIT????????????????????????????????????
+                                            }
+                                        }),
+                                        onComplete: function(response, headers, xhr) {
+										    var response = JSON.parse(xhr.response);
+											if(response.result.length > 0) {
+												allUsers.concat(response.result);
+												pageIndex += 128;
+												getAllUsers(id, pageIndex);
+												console.log(response);
+											}
+                                        },
+                                        onFailed: function(e) {
+                                            console.log(e);
                                         }
-                                    }),
-                                    onComplete: function(response, headers, xhr) {
-                                        var response = JSON.parse(xhr.response);
-                                        console.log(response)
-
-                                        spinner.hide();
-                                        inputContainer.style.display = 'block';
-
-                                        widget.communityUsers = response.result;
-                                    },
-                                    onFailed: function(e) {
-                                        console.log(e);
                                     }
+                                    WAFData.authenticatedRequest(swymURL + '/api/community/listmembers', requestLoadCommunityUsers);
+									return allUsers;
                                 }
-                                WAFData.authenticatedRequest(swymURL + '/api/community/listmembers', requestLoadCommunityUsers);
+								
+								spinner.hide();
+								inputContainer.style.display = 'block';
+								widget.communityUsers = getAllUsers(id);
+								
+                                // var requestLoadCommunityUsers = {
+                                //     method: 'POST',
+                                //     async: true,
+                                //     headers: {
+                                //         'X-DS-SWYM-CSRFTOKEN': serverToken,
+                                //         'Content-Type': 'application/json'
+                                //     },
+                                //     data: JSON.stringify({
+                                //         params: {
+                                //             community_id: id,
+                                //             limit: 128, //LIMIT????????????????????????????????????
+                                //         }
+                                //     }),
+                                //     onComplete: function(response, headers, xhr) {
+                                //         var response = JSON.parse(xhr.response);
+                                //         console.log(response)
+
+                                //         spinner.hide();
+                                //         inputContainer.style.display = 'block';
+
+                                //         widget.communityUsers = response.result;
+                                //     },
+                                //     onFailed: function(e) {
+                                //         console.log(e);
+                                //     }
+                                // }
+                                // WAFData.authenticatedRequest(swymURL + '/api/community/listmembers', requestLoadCommunityUsers);
+
+
                             }
 
                             var communitySelect = new Select({

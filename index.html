@@ -137,6 +137,7 @@
                                                             onComplete: function(response, headers, xhr) {
                                                                 var response = JSON.parse(response);
 																var notExistedUsersCount = 0;
+																
                                                                 console.log(response, widget.communityUsers)
 
 																imgContainer.innerHTML = '';
@@ -182,6 +183,7 @@
                                                     //widget.selectedCommunity
                                                 }
 
+												widget.groupSelect = [];
                                                 var groupSelect = new Select({
                                                     custom: false,
                                                     placeholder: 'Выберите группу',
@@ -253,8 +255,10 @@
                                 placeholder: 'Доступные сообщества',
                                 options: communitiesOptions,
                                 events: {
-                                    onChange: function(e) {
+                                    onChange: function(e, i) {
+										
 										widget.communityUsers  = [];
+										
                                         loadUsers(communitySelect.getValue()[0]);
                                         widget.selectedCommunity = communitySelect.getValue()[0];
 										
@@ -262,7 +266,7 @@
 										usersElement.style.display = 'none';
 										widget.groupSelect.select(0);
 										
-                                        console.log(e);
+                                        console.log(e, i);
                                     }
                                 }
                             });

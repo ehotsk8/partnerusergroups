@@ -222,7 +222,7 @@
                             function loadUsers(id) {
                                 if (id === undefined && id === '') return;
 
-                                container.style.display = 'none';
+                                inputContainer.style.display = 'none';
                                 spinner.show();
 
                                 var requestLoadCommunityUsers = {
@@ -243,7 +243,7 @@
                                         console.log(response.result)
 
                                         spinner.hide();
-                                        container.style.display = 'block';
+                                        inputContainer.style.display = 'block';
 
                                         widget.communityUsers = response.result;
                                     },

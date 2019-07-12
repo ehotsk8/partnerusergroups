@@ -34,7 +34,7 @@
                         styles: {
 
                         },
-                    }).inject(containerx);
+                    }).inject(containerx).hide();
 
                     var imgContainer = document.querySelector('#users');
                     var usersElement = document.querySelector('#users-container');
@@ -259,10 +259,10 @@
                                             console.log(response, statusLoading);
 
                                             if (response.result.length > 0) {
-                                                if (statusLoading.hidden)
+                                                if (statusLoading.isHidden())
                                                     statusLoading.show();
 
-                                                statusLoading.innerHTML = 'Загружено ' + pageIndex + ' из ' + response.nb_result;
+                                                statusLoading.innerHTML = 'Загружено ' + (pageIndex * limit) + ' из ' + response.nb_result;
                                                 Array.prototype.push.apply(widget.communityUsers, response.result);
                                                 getAllUsers(id, ++pageIndex);
                                             } else {

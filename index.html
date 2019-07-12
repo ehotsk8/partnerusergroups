@@ -352,15 +352,15 @@
 
                                 var userGroupItems = [];
 
-                               // widget.communityUsersWithoutGroup.forEach(function(item) {
+                                widget.communityUsersWithoutGroup.forEach(function(item) {
                                     userGroupItems.push({
 										"op": "add",
 										"path": "/groupMembers",
 										"value": {
-                                            "@id": "iam:efv"// + item.username
+                                            "@id": "iam:" + item.username
                                         }
 									});
-                               // });
+                                });
 
                                 var requestAddGroupUsers = {
                                     method: 'PATCH',

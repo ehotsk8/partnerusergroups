@@ -32,7 +32,7 @@
 
                     var statusLoading = UWA.Element("div", {
                         styles: {
-                            
+
                         },
                     }).inject(containerx);
 
@@ -250,7 +250,7 @@
                                             params: {
                                                 community_id: id,
                                                 page: pageIndex,
-                                                limit: limit, 
+                                                limit: limit,
                                             }
                                         }),
                                         onComplete: function(response, headers, xhr) {
@@ -259,13 +259,16 @@
                                             console.log(response, statusLoading);
 
                                             if (response.result.length > 0) {
-												statusLoading.innerHTML = 'Загружено ' + pageIndex + ' из ' + response.nb_result;
+                                                if (statusLoading.hidden)
+                                                    statusLoading.show();
+
+                                                statusLoading.innerHTML = 'Загружено ' + pageIndex + ' из ' + response.nb_result;
                                                 Array.prototype.push.apply(widget.communityUsers, response.result);
                                                 getAllUsers(id, ++pageIndex);
                                             } else {
                                                 isEnd = true;
                                                 spinner.hide();
-												statusLoading.hide();
+                                                statusLoading.hide();
                                                 inputContainer.style.display = 'block';
                                             }
                                         },

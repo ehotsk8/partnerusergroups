@@ -231,18 +231,13 @@
                                     data: JSON.stringify({
                                         params: {
                                             community_id: id,
-                                            limit: 128, //LIMIT????????????????????????????????????
+                                            limit: 9999, //LIMIT????????????????????????????????????
                                         }
                                     }),
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
                                         console.log(response)
                                         widget.communityUsers = response.result;
-
-                                        //response.result.forEach(function(user) {
-                                        //    addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer);
-                                        //});
-
                                     },
                                     onFailed: function(e) {
                                         console.log(e);
@@ -259,6 +254,7 @@
                                 options: communitiesOptions,
                                 events: {
                                     onChange: function(e) {
+										widget.communityUsers  = [];
                                         loadUsers(communitySelect.getValue()[0]);
                                         widget.selectedCommunity = communitySelect.getValue()[0];
 										

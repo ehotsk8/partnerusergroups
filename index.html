@@ -219,17 +219,18 @@
 
                             function loadUsers(id) {
                                 if (id === undefined && id === '') return;
-
+								
+								widget.communityUsers = [];
+								
                                 inputContainer.style.display = 'none';
                                 spinner.show();
 
-                                var allUsers = [];
 								var limit = 128;
 								var pageIndex = 1;
 								var isEnd = false;
 								
                                 function getAllUsers(id) {
-									if(isEnd) return allUsers;
+									if(isEnd) return;
 									
                                     var requestLoadCommunityUsers = {
                                         method: 'POST',
@@ -248,7 +249,7 @@
                                         onComplete: function(response, headers, xhr) {
 										    var response = JSON.parse(xhr.response);
 											if(response.result.length > 0) {
-												allUsers.concat(response.result);
+												widget.communityUsers.concat(response.result);
 												//pageIndex += limit;
 												getAllUsers(id, ++pageIndex);
 												console.log(response);
@@ -261,12 +262,11 @@
                                         }
                                     }
                                     WAFData.authenticatedRequest(swymURL + '/api/community/listmembers', requestLoadCommunityUsers);
-									return allUsers;
                                 }
 								
 								
-								widget.communityUsers = getAllUsers(id);
-								console.log(allUsers);
+								//widget.communityUsers = getAllUsers(id);
+								console.log(widget.communityUsers);
 								spinner.hide();
 								inputContainer.style.display = 'block';
 								

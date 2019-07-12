@@ -152,11 +152,13 @@
                                                                 });
 																
 																var usersCountElement = document.querySelector('#users-count');
+																var usersElement = document.querySelector('#users-container');
 																
 																if(notExistedUsersCount == 0) 
-																	usersCountElement.styles.display = 'none';
+																	usersElement.styles.display = 'none';
+																	//usersCountElement.styles.display = 'none';
 																else 
-																	usersCountElement.styles.display = 'block';
+																	usersElement.styles.display = 'block';
 
 																usersCountElement.innerHTML = 'Отсутствуют в группе: ' + notExistedUsersCount;
 																
@@ -408,7 +410,7 @@
             <div id='input-content'>
             </div>
 
-            <div id='users-container'>
+            <div id='users-container' style="display: none">
 				<div id='users-count' style="margin: 5px 0 10px 15px;font-weight: 600;"></div>
 				<div id='users'>
 			

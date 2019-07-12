@@ -342,9 +342,25 @@
                                 // -----------------------------------------------------------
                                 console.log(widget.communityUsersWithoutGroup);
 
+								spinner.show();
+								widget.communitySelect.disable();
+								widget.groupSelect.disable();
+
                                 var addGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
                                     widget.selectedUserGroupId + '?$mask=dsaccess:Mask.GroupUI.Members&tenant=dstenant:' +
                                     platformId;
+
+                                var userGroupItems = [];
+
+                                widget.communityUsersWithoutGroup.forEach(function(item) {
+                                    userGroupItems.push({
+										"op": "add",
+										"path": "/groupMembers",
+										"value": {
+                                            "@id": "iam:" + item.username
+                                        }
+									});
+                                });
 
                                 var requestAddGroupUsers = {
                                     method: 'PATCH',
@@ -352,23 +368,14 @@
                                     headers: {
                                         'Content-Type': 'application/json'
                                     },
-                                    data: JSON.stringify(
-                                        [{
-                                            "op": "add",
-                                            "path": "/groupMembers",
-                                            "value": {
-                                                "@id": "iam:efv"
-                                            }
-                                        }, {
-                                            "op": "add",
-                                            "path": "/groupMembers",
-                                            "value": {
-                                                "@id": "iam:nfa1"
-                                            }
-                                        }]
-                                    ),
+                                    data: JSON.stringify(userGroupItems),
                                     onComplete: function(response, headers, xhr) {
-
+										spinner.hide();
+										widget.communitySelect.enable();
+										widget.groupSelect.enable();
+										
+										widget.groupSelect.select(0);
+										widget.groupSelect.select(widget.selectedUserGroupId);
                                     },
                                     onFailed: function(e) {
                                         console.log(e);

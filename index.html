@@ -342,9 +342,9 @@
                                 // -----------------------------------------------------------
                                 console.log(widget.communityUsersWithoutGroup);
 
-								spinner.show();
-								widget.communitySelect.disable();
-								widget.groupSelect.disable();
+                                spinner.show();
+                                widget.communitySelect.disable();
+                                widget.groupSelect.disable();
 
                                 var addGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
                                     widget.selectedUserGroupId + '?$mask=dsaccess:Mask.GroupUI.Members&tenant=dstenant:' +
@@ -352,17 +352,30 @@
 
                                 var userGroupItems = [];
 
-                                widget.communityUsersWithoutGroup.forEach(function(item) {
+                                //for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
+                                for (let index = 0; index < 50; index++) {
+
+                                    const item = array[index];
                                     userGroupItems.push({
-										"op": "add",
-										"path": "/groupMembers",
-										"value": {
+                                        "op": "add",
+                                        "path": "/groupMembers",
+                                        "value": {
                                             "@id": "iam:" + item.username
                                         }
-									});
-                                });
-								
-								widget.communityUsersWithoutGroup = widget.communityUsersWithoutGroup.splice(0, 50);
+                                    });
+                                }
+
+                                // widget.communityUsersWithoutGroup.forEach(function(item) {
+                                //     userGroupItems.push({
+                                //         "op": "add",
+                                //         "path": "/groupMembers",
+                                //         "value": {
+                                //             "@id": "iam:" + item.username
+                                //         }
+                                //     });
+                                // });
+
+                                widget.communityUsersWithoutGroup = widget.communityUsersWithoutGroup.splice(0, 50);
 
                                 var requestAddGroupUsers = {
                                     method: 'PATCH',
@@ -372,12 +385,12 @@
                                     },
                                     data: JSON.stringify(userGroupItems),
                                     onComplete: function(response, headers, xhr) {
-										spinner.hide();
-										widget.communitySelect.enable();
-										widget.groupSelect.enable();
-										
-										widget.groupSelect.select(0);
-										widget.groupSelect.select(widget.selectedUserGroupId);
+                                        spinner.hide();
+                                        widget.communitySelect.enable();
+                                        widget.groupSelect.enable();
+
+                                        widget.groupSelect.select(0);
+                                        widget.groupSelect.select(widget.selectedUserGroupId);
                                     },
                                     onFailed: function(e) {
                                         console.log(e);

@@ -227,7 +227,9 @@
 
                             function loadUsers(id) {
                                 if (id === undefined && id === '') return;
-
+								
+								widget.communitySelect.disable();
+								
                                 widget.communityUsers = [];
 
                                 inputContainer.style.display = 'none';
@@ -263,7 +265,7 @@
                                                     statusLoading.show();
 												
 												//if(widget.communitySelect.isDisabled())
-													widget.communitySelect.disable();
+													//widget.communitySelect.disable();
 												
                                                 statusLoading.innerHTML = 'Загружено ' + (pageIndex * limit) + ' из ' + response.nb_result;
                                                 Array.prototype.push.apply(widget.communityUsers, response.result);

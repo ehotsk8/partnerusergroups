@@ -31,6 +31,7 @@
                     var spinner = new Spinner().inject(containerx).show();
 
                     var imgContainer = document.querySelector('#users');
+                    var usersElement = document.querySelector('#users-container');
 
                     function addImg(src, nickname, parent, isExist) {
                         var styleKO = {
@@ -122,49 +123,49 @@
                                                 });
 
                                                 function loadGroupUsers(groupSelect) {
-													
+
                                                     if (widget.changeToggle.isChecked()) {
                                                         var selectedUserGroupId = groupSelect.getValue()[0];
-														widget.selectedUserGroupId = selectedUserGroupId;
-														
+                                                        widget.selectedUserGroupId = selectedUserGroupId;
+
                                                         var userGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
                                                             selectedUserGroupId + '/groupMembers?tenant=dstenant:' +
                                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999';
-															
+
                                                         var requestUsers = {
                                                             method: 'GET',
                                                             async: true,
                                                             onComplete: function(response, headers, xhr) {
                                                                 var response = JSON.parse(response);
-																var notExistedUsersCount = 0;
-																
-																console.log('wtf', widget.communityUsers,  response.member);
+                                                                var notExistedUsersCount = 0;
 
-																imgContainer.innerHTML = '';
-																
+                                                                console.log('wtf', widget.communityUsers, response.member);
+
+                                                                imgContainer.innerHTML = '';
+
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {
                                                                         var isUserExist = response.member.filter(function(groupUser) {
                                                                             return user.first_name === groupUser.givenName.member[0] && user.last_name === groupUser.familyName.member[0];
                                                                         }).length > 0;
-																		
-																		if(!isUserExist)
-																			notExistedUsersCount++;
-																		
+
+                                                                        if (!isUserExist)
+                                                                            notExistedUsersCount++;
+
                                                                         addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
                                                                     }
                                                                 });
-																
-																var usersCountElement = document.querySelector('#users-count');
-																var usersElement = document.querySelector('#users-container');
-																
-																if(notExistedUsersCount == 0) 
-																	usersElement.style.display = 'none';
-																else 
-																	usersElement.style.display = 'block';
 
-																usersCountElement.innerHTML = 'Отсутствуют в группе: ' + notExistedUsersCount;
-																notExistedUsersCount = 0;
+                                                                var usersCountElement = document.querySelector('#users-count');
+                                                                var usersElement = document.querySelector('#users-container');
+
+                                                                if (notExistedUsersCount == 0)
+                                                                    usersElement.style.display = 'none';
+                                                                else
+                                                                    usersElement.style.display = 'block';
+
+                                                                usersCountElement.innerHTML = 'Отсутствуют в группе: ' + notExistedUsersCount;
+                                                                notExistedUsersCount = 0;
 
                                                             },
                                                             onFailed: function(e) {
@@ -185,11 +186,11 @@
                                                     options: groupList,
                                                     events: {
                                                         onChange: function(e) {
-														    var selectedUserGroupId = groupSelect.getValue()[0];
-															if(selectedUserGroupId !== ''){
-																loadGroupUsers(groupSelect);
-															}
-																
+                                                            var selectedUserGroupId = groupSelect.getValue()[0];
+                                                            if (selectedUserGroupId !== '') {
+                                                                loadGroupUsers(groupSelect);
+                                                            }
+
                                                         }
                                                     }
                                                 });
@@ -221,6 +222,9 @@
                             function loadUsers(id) {
                                 if (id === undefined && id === '') return;
 
+                                usersElement.style.display = 'none';
+                                spinner.show();
+
                                 var requestLoadCommunityUsers = {
                                     method: 'POST',
                                     async: true,
@@ -231,12 +235,16 @@
                                     data: JSON.stringify({
                                         params: {
                                             community_id: id,
-                                            limit: 128, //LIMIT????????????????????????????????????
+                                            limit: 9999, //LIMIT????????????????????????????????????
                                         }
                                     }),
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
-										console.log(response.result)
+                                        console.log(response.result)
+
+                                        spinner.hide();
+                                        usersElement.style.display = 'block';
+
                                         widget.communityUsers = response.result;
                                     },
                                     onFailed: function(e) {
@@ -252,13 +260,12 @@
                                 options: communitiesOptions,
                                 events: {
                                     onChange: function(e, index) {
-										//widget.communityUsers  = [];
+                                        //widget.communityUsers  = [];
 
                                         loadUsers(communitySelect.getValue()[0]);
 
-										var usersElement = document.querySelector('#users-container');
-										usersElement.style.display = 'none';
-										widget.groupSelect.select(0);
+                                        usersElement.style.display = 'none';
+                                        widget.groupSelect.select(0);
                                     }
                                 }
                             });
@@ -407,10 +414,10 @@
             </div>
 
             <div id='users-container' style="display: none">
-				<div id='users-count' style="margin: 5px 0 10px 15px;font-weight: 600;"></div>
-				<div id='users'>
-			
-				</div>
+                <div id='users-count' style="margin: 5px 0 10px 15px;font-weight: 600;"></div>
+                <div id='users'>
+
+                </div>
             </div>
 
             <div id='button-bar'>
@@ -433,8 +440,8 @@
             padding: 10px;
             border-radius: 5px;
         }
-		
-		#users {
+        
+        #users {
             text-align: center;
             display: flex;
             overflow: auto;

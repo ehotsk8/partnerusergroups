@@ -209,7 +209,7 @@
                                 options: communitiesOptions,
                                 events: {
                                     onChange: function(e) {
-                                        loadUsers(widget.communitySelect.getValue()[0]);
+                                        loadUsers(communitySelect.getValue()[0]);
                                         console.log(e);
                                     }
                                 }
@@ -218,7 +218,7 @@
                             communitySelect.inject(container);
                             widget.communitySelect = communitySelect;
 
-                            loadUsers(widget.communitySelect.getValue()[0]);
+                            loadUsers(communitySelect.getValue()[0]);
 
                             console.log(communitySelect);
                             // communitySelect.select(widget.getValue('DEFAULT_COMMUNITY'));

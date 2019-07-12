@@ -149,7 +149,7 @@
 
                                                                 imgContainer.innerHTML = '';
 
-                                                                console.log(widget.communityUsers)
+                                                                console.log(response.member)
 
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {
@@ -340,7 +340,6 @@
 
                             button.addEvent('onClick', function() {
                                 // -----------------------------------------------------------
-                                console.log(widget.communityUsersWithoutGroup);
 
                                 spinner.show();
                                 widget.communitySelect.disable();
@@ -356,6 +355,7 @@
                                 for (let index = 0; index < 10; index++) {
 
                                     const item = widget.communityUsersWithoutGroup[index];
+									if(item.user_tenant_status == 1){
                                     userGroupItems.push({
                                         "op": "add",
                                         "path": "/groupMembers",
@@ -363,7 +363,11 @@
                                             "@id": "iam:" + item.username
                                         }
                                     });
+									}
+
                                 }
+								
+								console.log(userGroupItems);
 
                                 // widget.communityUsersWithoutGroup.forEach(function(item) {
                                 //     userGroupItems.push({

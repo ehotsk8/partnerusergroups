@@ -134,20 +134,21 @@
                                                             method: 'GET',
                                                             async: true,
                                                             onComplete: function(response, headers, xhr) {
-															    var response = JSON.parse(response);
-															   
-																console.log(response,  widget.communityUsers)
-																
-																
-																
+                                                                var response = JSON.parse(response);
+
+                                                                console.log(response, widget.communityUsers)
+
+
+
                                                                 widget.communityUsers.forEach(function(user) {
-																
-																	//var existedUser = response.member.filter(function(groupUser) {
-																		
-																	//});
-                                                                    addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, true);
+                                                                    if (user) {
+                                                                        var isUserExist = response.member.filter(function(groupUser) {
+                                                                            return user.first_name === groupUser.givenName.member[0] && user.last_name === groupUser.familyName.member[0];
+                                                                        }).length > 0;
+                                                                        addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
+                                                                    }
                                                                 });
-																
+
                                                             },
                                                             onFailed: function(e) {
                                                                 console.log(e);

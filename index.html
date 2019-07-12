@@ -121,21 +121,28 @@
                                                     });
                                                 });
 
-                                                function loadGroupUsers() {
+                                                function loadGroupUsers(groupSelect) {
+													
                                                     if (widget.changeToggle.isChecked()) {
-                                                        var selectedUserGroupId = widget.groupSelect.getValue()[0];
+                                                        var selectedUserGroupId = groupSelect.getValue()[0];
 														widget.selectedUserGroupId = selectedUserGroupId;
 														
                                                         var userGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
                                                             selectedUserGroupId + '/groupMembers?tenant=dstenant:' +
                                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999';
+														
+														console.log('wtf 2')
 
+														
+															
                                                         var requestUsers = {
                                                             method: 'GET',
                                                             async: true,
                                                             onComplete: function(response, headers, xhr) {
                                                                 var response = JSON.parse(response);
 																var notExistedUsersCount = 0;
+																
+																console.log('wtf', response);
 
 																imgContainer.innerHTML = '';
 																
@@ -174,10 +181,6 @@
                                                         // CREATE USER GROUP
                                                         //widget.groupTextName.getValue();
                                                     }
-
-                                                    //https://dspart001-eu1-partners-usersgroup.3dexperience.3ds.com/3drdfpersist/v0/resources/uuid:08fcc178-d75f-43c0-885c-ab12115a8ff3/groupMembers?tenant=dstenant:DSPART001&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999
-
-                                                    //widget.selectedCommunity
                                                 }
 
                                                 var groupSelect = new Select({
@@ -186,11 +189,9 @@
                                                     options: groupList,
                                                     events: {
                                                         onChange: function(e) {
-															console.log(groupSelect.getValue(), widget.communitySelect.getValue());
 														    var selectedUserGroupId = groupSelect.getValue()[0];
 															if(selectedUserGroupId !== ''){
-																console.log(groupSelect.getValue());
-																loadGroupUsers();
+																loadGroupUsers(groupSelect);
 															}
 																
                                                         }

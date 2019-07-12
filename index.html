@@ -362,7 +362,7 @@
 									});
                                 });
 								
-								widget.communityUsersWithoutGroup.splice(0, 50);
+								widget.communityUsersWithoutGroup = widget.communityUsersWithoutGroup.splice(0, 50);
 
                                 var requestAddGroupUsers = {
                                     method: 'PATCH',

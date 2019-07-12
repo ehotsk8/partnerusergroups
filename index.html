@@ -185,8 +185,8 @@
                                                     placeholder: 'Выберите группу',
                                                     options: groupList,
                                                     events: {
-                                                        onChange: function(e, i) {
-															console.log(e , i)
+                                                        onChange: function(e) {
+															console.log(widget.groupSelect.getValue(), widget.groupSelect.getSelected());
 														    //var selectedUserGroupId = widget.groupSelect.getValue()[0];
 															//if(selectedUserGroupId !== '')
 															//	loadGroupUsers();

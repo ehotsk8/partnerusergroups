@@ -140,7 +140,9 @@
                                                                 var notExistedUsersCount = 0;
 
                                                                 imgContainer.innerHTML = '';
-
+																
+																console.log(widget.communityUsers)
+																
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {
                                                                         var isUserExist = response.member.filter(function(groupUser) {

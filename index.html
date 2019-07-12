@@ -185,10 +185,11 @@
                                                     placeholder: 'Выберите группу',
                                                     options: groupList,
                                                     events: {
-                                                        onChange: function(e) {
-														    var selectedUserGroupId = widget.groupSelect.getValue()[0];
-															if(selectedUserGroupId !== '')
-																loadGroupUsers();
+                                                        onChange: function(e, i) {
+															console.log(e , i)
+														    //var selectedUserGroupId = widget.groupSelect.getValue()[0];
+															//if(selectedUserGroupId !== '')
+															//	loadGroupUsers();
                                                         }
                                                     }
                                                 });

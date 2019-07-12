@@ -228,10 +228,9 @@
                                 spinner.show();
 
 								var limit = 128;
-								var pageIndex = 1;
 								var isEnd = false;
 								
-                                function getAllUsers(id) {
+                                function getAllUsers(id, pageIndex) {
 									if(isEnd) return;
 									
                                     var requestLoadCommunityUsers = {
@@ -254,8 +253,7 @@
 
 											if(response.result.length > 0) {
 												widget.communityUsers.concat(response.result);
-												//pageIndex += limit;
-												getAllUsers(id, ++pageIndex);
+												getAllUsers(id, pageIndex + limit);
 											}else {
 												isEnd = true;
 											}
@@ -269,6 +267,7 @@
 								
 								
 								//widget.communityUsers = getAllUsers(id);
+								getAllUsers(id, limit);
 								console.log(widget.communityUsers);
 								spinner.hide();
 								inputContainer.style.display = 'block';

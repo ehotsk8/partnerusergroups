@@ -30,11 +30,11 @@
                     var containerx = document.querySelector('#button-bar');
                     var spinner = new Spinner().inject(containerx).show();
 
-                    var imgContainer = document.querySelector('#users-container');
+                    var imgContainer = document.querySelector('#users');
 
                     function addImg(src, nickname, parent, isExist) {
                         var styleKO = {
-                            border: "solid 2px red",
+                            border: "solid 2px #ff8181",
                             background: "#fff1f1"
                         };
                         var styleOK = {
@@ -396,7 +396,10 @@
             <div id='input-content'>
             </div>
 
-            <div id='users-container' style="text-align: center; display: flex; overflow: auto;">
+            <div id='users-container'>
+				<div id='users'>
+			
+				</div>
             </div>
 
             <div id='button-bar'>
@@ -411,6 +414,19 @@
         body {
             overflow: hidden;
             padding: 0 !important;
+        }
+        
+        #users-container {
+            margin: 20px 0 0 0;
+            border: dashed 2px #368ec4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+		
+		#users {
+            text-align: center;
+            display: flex;
+            overflow: auto;
         }
         
         #divPageBody {

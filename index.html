@@ -226,8 +226,11 @@
                                 var allUsers = [];
 								var limit = 128;
 								var pageIndex = 1;
+								var isEnd = false;
 								
                                 function getAllUsers(id) {
+									if(isEnd) return allUsers;
+									
                                     var requestLoadCommunityUsers = {
                                         method: 'POST',
                                         async: true,
@@ -249,6 +252,8 @@
 												//pageIndex += limit;
 												getAllUsers(id, ++pageIndex);
 												console.log(response);
+											}else {
+												isEnd = true;
 											}
                                         },
                                         onFailed: function(e) {

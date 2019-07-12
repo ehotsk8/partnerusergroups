@@ -253,7 +253,7 @@
 
 											if(response.result.length > 0) {
 												widget.communityUsers.concat(response.result);
-												getAllUsers(id, pageIndex + limit);
+												getAllUsers(id, ++pageIndex);
 											}else {
 												isEnd = true;
 											}
@@ -267,7 +267,7 @@
 								
 								
 								//widget.communityUsers = getAllUsers(id);
-								getAllUsers(id, limit);
+								getAllUsers(id, 1);
 								console.log(widget.communityUsers);
 								spinner.hide();
 								inputContainer.style.display = 'block';

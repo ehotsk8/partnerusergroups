@@ -225,7 +225,7 @@
 
                                 var allUsers = [];
 								var limit = 128;
-								var pageIndex = limit;
+								var pageIndex = 1;
 								
                                 function getAllUsers(id) {
                                     var requestLoadCommunityUsers = {
@@ -246,8 +246,8 @@
 										    var response = JSON.parse(xhr.response);
 											if(response.result.length > 0) {
 												allUsers.concat(response.result);
-												pageIndex += limit;
-												getAllUsers(id, pageIndex);
+												//pageIndex += limit;
+												getAllUsers(id, ++pageIndex);
 												console.log(response);
 											}
                                         },

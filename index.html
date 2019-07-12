@@ -262,7 +262,10 @@
                                         loadUsers(communitySelect.getValue()[0]);
                                         widget.selectedCommunity = communitySelect.getValue()[0];
 										
+										var usersElement = document.querySelector('#users-container');
+										usersElement.style.display = 'none';
 										widget.groupSelect.select(0);
+										
                                         console.log(e);
                                     }
                                 }

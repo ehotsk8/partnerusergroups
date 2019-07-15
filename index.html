@@ -175,10 +175,12 @@
                                                                     addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
                                                                 }
 																
-																usersElement.style.display = 'block';
-																usersCountElement.innerHTML = 'Отсутствуют в группе ' + notExistedUsersCount + ' из ' + widget.communityUsers.length;
-																notExistedUsersCount = 0;
+																
                                                             });
+															
+															usersElement.style.display = 'block';
+															usersCountElement.innerHTML = 'Отсутствуют в группе ' + notExistedUsersCount + ' из ' + widget.communityUsers.length;
+															notExistedUsersCount = 0;
                                                         }
 
                                                         var requestUsers = {
@@ -224,10 +226,8 @@
                                                                 //else
                                                             },
                                                             onFailure: function(e) {
-                                                                widget.communityUsersWithoutGroup = widget.communityUsers;
-                                                                usersElement.style.display = 'block';
-
 																addUsersToContainer([]);
+																                                                                //widget.communityUsersWithoutGroup = widget.communityUsers;
                                                             }
                                                         }
                                                         WAFData.authenticatedRequest(userGroupUsersQuery, requestUsers);

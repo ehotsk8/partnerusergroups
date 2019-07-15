@@ -19,7 +19,7 @@
     </widget:preferences>
 
     <script type="text/javascript">
-        function executeWidgetCode() {
+        function executeWidgetCode(isRefreshed) {
 
             require(['DS/UIKIT/Input/Button', 'DS/UIKIT/Input/Select',
                     'DS/UIKIT/Input/Toggle', 'DS/UIKIT/Input/Text',
@@ -28,7 +28,7 @@
                 function(Button, Select, Toggle, Text, WAFData, Spinner) {
 
                     var containerx = document.querySelector('#button-bar');
-					containerx.innerHTML = '';
+                    containerx.innerHTML = '';
                     var spinner = new Spinner().inject(containerx).show();
 
                     var statusLoading = UWA.Element("div", {
@@ -38,7 +38,7 @@
                     }).inject(containerx).hide();
 
                     var imgContainer = document.querySelector('#users');
-					imgContainer.innerHTML = '';
+                    imgContainer.innerHTML = '';
                     var usersElement = document.querySelector('#users-container');
 
                     function addImg(src, nickname, parent, isExist) {
@@ -77,9 +77,9 @@
                             });
 
                             var container = document.querySelector('#content-container');
-							container.innerHTML = '';
+                            container.innerHTML = '';
                             var inputContainer = document.querySelector('#input-content');
-							inputContainer.innerHTML = '';
+                            inputContainer.innerHTML = '';
                             var buttonsBar = document.querySelector('#button-bar');
 
                             function wrapElement(element) {
@@ -249,7 +249,10 @@
                                 var isEnd = false;
 
                                 function getAllUsers(id, pageIndex) {
-                                    if (isEnd) return;
+                                    if (isEnd || isRefreshed) {
+                                        isRefreshed = false;
+                                        return;
+                                    }
 
                                     var requestLoadCommunityUsers = {
                                         method: 'POST',
@@ -279,7 +282,6 @@
                                                 getAllUsers(id, ++pageIndex);
                                             } else {
                                                 widget.communitySelect.enable();
-
                                                 isEnd = true;
                                                 spinner.hide();
                                                 statusLoading.hide();
@@ -482,8 +484,12 @@
         function widgetLoading() {
             if (widget) {
                 widget.addEvents({
-                    onLoad: executeWidgetCode,
-                    onRefresh: executeWidgetCode
+                    onLoad: function() {
+                        executeWidgetCode(false)
+                    },
+                    onRefresh: function() {
+                        executeWidgetCode(true)
+                    }
                 });
 
             } else {

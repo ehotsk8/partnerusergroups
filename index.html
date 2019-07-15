@@ -19,7 +19,7 @@
     </widget:preferences>
 
     <script type="text/javascript">
-        function executeWidgetCode(isRefreshed) {
+        function executeWidgetCode() {
 
             require(['DS/UIKIT/Input/Button', 'DS/UIKIT/Input/Select',
                     'DS/UIKIT/Input/Toggle', 'DS/UIKIT/Input/Text',
@@ -251,8 +251,7 @@
                                 var isEnd = false;
 
                                 function getAllUsers(id, pageIndex) {
-                                    if (isEnd || isRefreshed) {
-                                        isRefreshed = false;
+                                    if (isEnd) {
                                         return;
                                     }
 
@@ -281,7 +280,13 @@
 
                                                 statusLoading.innerHTML = 'Загружено ' + (pageIndex * limit) + ' из ' + response.nb_result;
                                                 Array.prototype.push.apply(widget.communityUsers, response.result);
-                                                getAllUsers(id, ++pageIndex);
+												
+												if(isRefreshed) {
+													return;
+												} else
+													isRefreshed = false;
+													getAllUsers(id, ++pageIndex);
+												}
                                             } else {
                                                 widget.communitySelect.enable();
                                                 isEnd = true;
@@ -299,7 +304,6 @@
 
 
                                 getAllUsers(id, 1);
-
                             }
 
                             var communitySelect = new Select({
@@ -482,12 +486,14 @@
 
         function widgetLoading() {
             if (widget) {
+				var isRefreshed = false;
                 widget.addEvents({
                     onLoad: function() {
-                        executeWidgetCode(false)
+                        executeWidgetCode()
                     },
                     onRefresh: function() {
-                        executeWidgetCode(true)
+                        executeWidgetCode();
+						isRefreshed = true;
                     }
                 });
 

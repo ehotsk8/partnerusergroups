@@ -29,10 +29,10 @@
 
                     var containerx = document.querySelector('#button-bar');
                     containerx.innerHTML = '';
-					var usersCountElement = document.querySelector('#users-count');
-					usersCountElement.innerHTML = '';
-					
-					var spinner = new Spinner().inject(containerx).show();
+                    var usersCountElement = document.querySelector('#users-count');
+                    usersCountElement.innerHTML = '';
+
+                    var spinner = new Spinner().inject(containerx).show();
 
                     var statusLoading = UWA.Element("div", {
                         styles: {
@@ -172,7 +172,7 @@
                                                                     }
                                                                 });
 
-                                                          
+
                                                                 var usersElement = document.querySelector('#users-container');
 
                                                                 if (notExistedUsersCount == 0)
@@ -278,15 +278,15 @@
                                                 if (statusLoading.isHidden())
                                                     statusLoading.show();
 
-                                                statusLoading.innerHTML = 'Загружено ' + (pageIndex * limit) + ' из ' + response.nb_result;
+                                                statusLoading.innerHTML = 'Загружено ' + (response.result.length < pageIndex ? response.result.length : pageIndex * limit) + ' из ' + response.nb_result;
                                                 Array.prototype.push.apply(widget.communityUsers, response.result);
-												
-												if(isRefreshed) {
-													return;
-												} else {
-													isRefreshed = false;
-													getAllUsers(id, ++pageIndex);
-												}
+
+                                                if (widget.isRefreshed) {
+                                                    return;
+                                                }
+
+                                                widget.isRefreshed = false;
+                                                getAllUsers(id, ++pageIndex);
                                             } else {
                                                 widget.communitySelect.enable();
                                                 isEnd = true;
@@ -486,14 +486,14 @@
 
         function widgetLoading() {
             if (widget) {
-				var isRefreshed = false;
                 widget.addEvents({
                     onLoad: function() {
+                        widget.isRefreshed = false;
                         executeWidgetCode()
                     },
                     onRefresh: function() {
+                        widget.isRefreshed = true;
                         executeWidgetCode();
-						isRefreshed = true;
                     }
                 });
 
@@ -644,7 +644,7 @@
         }
         
         .card-title {
-			margin: 5px 0 0 0;
+            margin: 5px 0 0 0;
             color: #272727;
         }
     </style>

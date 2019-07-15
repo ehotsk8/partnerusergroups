@@ -28,6 +28,7 @@
                 function(Button, Select, Toggle, Text, WAFData, Spinner) {
 
                     var containerx = document.querySelector('#button-bar');
+					containerx.innerHTML = '';
                     var spinner = new Spinner().inject(containerx).show();
 
                     var statusLoading = UWA.Element("div", {
@@ -37,6 +38,7 @@
                     }).inject(containerx).hide();
 
                     var imgContainer = document.querySelector('#users');
+					imgContainer.innerHTML = '';
                     var usersElement = document.querySelector('#users-container');
 
                     function addImg(src, nickname, parent, isExist) {
@@ -75,7 +77,9 @@
                             });
 
                             var container = document.querySelector('#content-container');
+							container.innerHTML = '';
                             var inputContainer = document.querySelector('#input-content');
+							inputContainer.innerHTML = '';
                             var buttonsBar = document.querySelector('#button-bar');
 
                             function wrapElement(element) {

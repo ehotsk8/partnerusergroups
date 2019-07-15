@@ -172,17 +172,20 @@
 
                                                                 var request = {
                                                                     method: 'GET',
-                                                                    async: true,
+                                                                    async: false,
                                                                     headers: {
                                                                         "SecurityContext": encodeURIComponent(roleName + orgName + collabSpaceName),
                                                                     },
                                                                     onComplete: function(response, headers, xhr) {
                                                                         var response = JSON.parse(response);
                                                                         console.log(response);
-                                                                    }
+                                                                    },
+																	 onFailed: function(e) {
+																		console.log(e);
+																	}	
                                                                 }
 
-                                                                WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/pid:' + widget.communityUsers[0].id, request);
+                                                                WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/pid:' + '53aa4010384999005577acd145c4f5cd', request);//widget.communityUsers[0].id, request);
 
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {

@@ -28,17 +28,17 @@
                 function(Button, Select, Toggle, Text, WAFData, Spinner) {
 
                     var usersElement = document.querySelector('#users-container');
-					usersElement.style.display = 'none';
-					
+                    usersElement.style.display = 'none';
+
                     var buttonsBar = document.querySelector('#button-bar');
                     buttonsBar.innerHTML = '';
-					
+
                     var usersCountElement = document.querySelector('#users-count');
                     usersCountElement.innerHTML = '';
-					
+
                     var inputContainer = document.querySelector('#input-content');
                     inputContainer.innerHTML = '';
-					
+
                     var container = document.querySelector('#content-container');
                     container.innerHTML = '';
 
@@ -161,8 +161,8 @@
                                                                 var notExistedUsersCount = 0;
 
                                                                 imgContainer.innerHTML = '';
-																
-																widget.groupUsersList = response.member;
+
+                                                                widget.groupUsersList = response.member;
 
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {
@@ -278,34 +278,34 @@
 
                                             //console.log(response);
 
-											function showGroups() {
-												widget.communitySelect.enable();
+                                            function showGroups() {
+                                                widget.communitySelect.enable();
                                                 isEnd = true;
                                                 spinner.hide();
                                                 statusLoading.hide();
                                                 inputContainer.style.display = 'block';
-											}
-											
+                                            }
+
                                             if (response.result.length > 0) {
                                                 if (statusLoading.isHidden())
                                                     statusLoading.show();
 
                                                 statusLoading.innerHTML = 'Загружено ' + (response.result.length < limit ? response.result.length : pageIndex * limit) + ' из ' + response.nb_result;
                                                 Array.prototype.push.apply(widget.communityUsers, response.result);
-												
+
 
                                                 if (!widget.isRefreshed) {
-													getAllUsers(id, ++pageIndex);
+                                                    getAllUsers(id, ++pageIndex);
                                                 }
                                             } else {
-												showGroups();
+                                                showGroups();
                                             }
-											
-											if(widget.isRefreshed) {
-												showGroups();
-												widget.isRefreshed = false;
-											}
-											
+
+                                            if (widget.isRefreshed) {
+                                                showGroups();
+                                                widget.isRefreshed = false;
+                                            }
+
                                         },
                                         onFailed: function(e) {
                                             console.log(e);
@@ -377,18 +377,16 @@
                                 for (let index = 0; index < 1; index++) {
 
                                     const item = widget.communityUsersWithoutGroup[index];
-                                    if (item.user_tenant_status == 1) {
-                                        userGroupItems.push({
-                                            "op": "add",
-                                            "path": "/groupMembers",
-                                            "value": {
-                                                "@id": "iam:" + item.username
-                                            }
-                                        });
-                                    }
+                                    userGroupItems.push({
+                                        "op": "add",
+                                        "path": "/groupMembers",
+                                        "value": {
+                                            "@id": "iam:" + item.username
+                                        }
+                                    });
                                 }
-								
-								console.log(userGroupItems, widget.communityUsersWithoutGroup, widget.groupUsersList);
+
+                                console.log(userGroupItems, widget.communityUsersWithoutGroup, widget.groupUsersList);
 
                                 // widget.communityUsersWithoutGroup.forEach(function(item) {
                                 //     userGroupItems.push({

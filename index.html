@@ -306,7 +306,6 @@
 												widget.isRefreshed = false;
 											}
 											
-                                            console.log(widget.communityUsers);
                                         },
                                         onFailed: function(e) {
                                             console.log(e);
@@ -376,7 +375,7 @@
                                 var userGroupItems = [];
 
                                 //for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
-                                for (let index = 0; index < 2; index++) {
+                                for (let index = 0; index < 1; index++) {
 
                                     const item = widget.communityUsersWithoutGroup[index];
                                     if (item.user_tenant_status == 1) {
@@ -390,8 +389,6 @@
                                     }
 
                                 }
-
-                                console.log(userGroupItems);
 
                                 // widget.communityUsersWithoutGroup.forEach(function(item) {
                                 //     userGroupItems.push({

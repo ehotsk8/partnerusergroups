@@ -26,7 +26,7 @@
                     'DS/WAFData/WAFData', 'DS/UIKIT/Spinner'
                 ],
                 function(Button, Select, Toggle, Text, WAFData, Spinner) {
-                    widegt.loadingIndex = 0;
+                    widget.loadingIndex = 0;
 					
                     var usersElement = document.querySelector('#users-container');
                     usersElement.style.display = 'none';
@@ -447,30 +447,31 @@
                                         }
                                     }]),
                                     onComplete: function(response, headers, xhr) {
-                                        widegt.loadingIndex++;
+                                        widget.loadingIndex++;
 
-                                        if (widegt.loadingIndex >= widget.communityUsersWithoutGroup.length - 2) {
+                                        if (widget.loadingIndex >= widget.communityUsersWithoutGroup.length - 2) {
                                             spinner.hide();
                                             widget.communitySelect.enable();
                                             widget.groupSelect.enable();
-                                            widegt.loadingIndex = 0;
+                                            widget.loadingIndex = 0;
 
                                             //  widget.groupSelect.select(0);
                                             //  widget.groupSelect.select(widget.selectedUserGroupId);
                                         }
+										
+										console.log(widget.loadingIndex);
 
                                         widget.groupSelect.select(0);
                                         widget.groupSelect.select(widget.selectedUserGroupId);
                                     },
                                     onFailure: function(e) {
-                                        widegt.loadingIndex++;
+                                        widget.loadingIndex++;
                                         console.log('WTF user', item);
                                         //console.log(e);
                                     }
                                 }
                                 WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
 
-                                console.log(widegt.loadingIndex);
                                 // var requestAddGroupUsers = {
                                 //     method: 'PATCH',
                                 //     async: true,

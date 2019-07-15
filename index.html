@@ -183,7 +183,7 @@
 
                                                                             WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/pid:' + user.id, request);
                                                                             //return isSameName || ('iam:' + user.login) === groupUser['@id'];
-                                                                            return isSameName || ('iam:' + user.login) === groupUser['@id'];
+                                                                            return ('iam:' + user.login) === groupUser['@id'];
                                                                         }).length > 0;
 
                                                                         if (!isUserExist) {

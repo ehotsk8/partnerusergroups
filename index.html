@@ -146,16 +146,18 @@
                                                 function loadGroupUsers(groupSelect) {
 													usersIconsCotaninerElement.innerHTML = '';
                                                     widget.communityUsersWithoutGroup = [];
-
+	
+													console.log(widget.communityUsers);
+													
                                                     if (widget.changeToggle.isChecked()) {
-                                                        var selectedUserGroupId = groupSelect.getValue()[0];
+                                                        let selectedUserGroupId = groupSelect.getValue()[0];
                                                         widget.selectedUserGroupId = selectedUserGroupId;
 
-                                                        var userGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
+                                                        let userGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
                                                             selectedUserGroupId + '/groupMembers?tenant=dstenant:' +
                                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999';
 
-                                                        var notExistedUsersCount = 0;
+                                                        let notExistedUsersCount = 0;
 
                                                         function addUsersToContainer(members) {
                                                             widget.communityUsers.forEach(function(user) {
@@ -213,7 +215,6 @@
                                                                 // 		console.log(e);
                                                                 // 	}	
                                                                 // }
-
                                                                 //WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/' + 'nadiya' + '?select=firstname&select=lastname&select=isactive', request); //widget.communityUsers[0].id, request);
 
                                                                 if (response.member.length > 0) {
@@ -227,7 +228,6 @@
                                                                 //else
                                                             },
                                                             onFailure: function(e) {
-															    widget.communityUsersWithoutGroup = widget.communityUsers;
                                                                 addUsersToContainer([]);
                                                             }
                                                         }

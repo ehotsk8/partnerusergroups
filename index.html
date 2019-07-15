@@ -324,7 +324,6 @@
                                 options: communitiesOptions,
                                 events: {
                                     onChange: function(e, index) {
-                                        //widget.communityUsers  = [];
 
                                         loadUsers(communitySelect.getValue()[0]);
 
@@ -387,8 +386,9 @@
                                             }
                                         });
                                     }
-
                                 }
+								
+								console.log(widget.communityUsersWithoutGroup, widget.communityUsers);
 
                                 // widget.communityUsersWithoutGroup.forEach(function(item) {
                                 //     userGroupItems.push({

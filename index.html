@@ -428,7 +428,7 @@
 
                                     var requestAddGroupUsers = {
                                         method: 'PATCH',
-                                        async: true,
+                                        async: false,
                                         headers: {
                                             'Content-Type': 'application/json'
                                         },
@@ -440,8 +440,11 @@
                                             }
                                         }]),
                                         onComplete: function(response, headers, xhr) {
-                                            loadingIndex++;
-
+										
+											console.log(xhr);
+											//if(xhr)
+											loadingIndex++;
+											
                                             if (loadingIndex >= widget.communityUsersWithoutGroup.length - 2) {
                                                 spinner.hide();
                                                 widget.communitySelect.enable();
@@ -457,7 +460,7 @@
                                         onFailed: function(e) {
                                             loadingIndex++;
                                             console.log('WTF user', item);
-                                            console.log(e);
+                                            //console.log(e);
                                         }
                                     }
                                     WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);

@@ -154,6 +154,27 @@
                                                             selectedUserGroupId + '/groupMembers?tenant=dstenant:' +
                                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999';
 
+                                                        function addUsersToContainer(members) {
+                                                            widget.communityUsers.forEach(function(user) {
+                                                                if (user) {
+                                                                    var isUserExist = members.filter(function(groupUser) {
+                                                                        //var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
+                                                                        //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
+
+                                                                        //return isSameName || ('iam:' + user.login) === groupUser['@id'];
+                                                                        return ('iam:' + user.login) === groupUser['@id'];
+                                                                    }).length > 0;
+
+                                                                    if (!isUserExist) {
+                                                                        notExistedUsersCount++;
+                                                                        widget.communityUsersWithoutGroup.push(user);
+                                                                    }
+
+                                                                    addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
+                                                                }
+                                                            });
+                                                        }
+
                                                         var requestUsers = {
                                                             method: 'GET',
                                                             async: true,
@@ -186,43 +207,45 @@
                                                                 // }
 
                                                                 //WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/' + 'nadiya' + '?select=firstname&select=lastname&select=isactive', request); //widget.communityUsers[0].id, request);
-																																
+
                                                                 if (response.member.length > 0) {
-                                                                    widget.communityUsers.forEach(function(user) {
-                                                                        if (user) {
-                                                                            var isUserExist = response.member.filter(function(groupUser) {
-                                                                                //var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
-                                                                                //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
+																	addUsersToContainer(response.member);
+                                                                    // widget.communityUsers.forEach(function(user) {
+                                                                    //     if (user) {
+                                                                    //         var isUserExist = response.member.filter(function(groupUser) {
+                                                                    //             //var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
+                                                                    //             //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
 
-                                                                                //return isSameName || ('iam:' + user.login) === groupUser['@id'];
-                                                                                return ('iam:' + user.login) === groupUser['@id'];
-                                                                            }).length > 0;
+                                                                    //             //return isSameName || ('iam:' + user.login) === groupUser['@id'];
+                                                                    //             return ('iam:' + user.login) === groupUser['@id'];
+                                                                    //         }).length > 0;
 
-                                                                            if (!isUserExist) {
-                                                                                notExistedUsersCount++;
-                                                                                widget.communityUsersWithoutGroup.push(user);
-                                                                            }
+                                                                    //         if (!isUserExist) {
+                                                                    //             notExistedUsersCount++;
+                                                                    //             widget.communityUsersWithoutGroup.push(user);
+                                                                    //         }
 
-                                                                            addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
-                                                                        }
-                                                                    });
+                                                                    //         addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
+                                                                    //     }
+                                                                    // });
                                                                 } else {
-																	widget.communityUsersWithoutGroup = widget.communityUsers;
-																}
+                                                                    widget.communityUsersWithoutGroup = widget.communityUsers;
+                                                                }
 
                                                                 //if (notExistedUsersCount == 0)
                                                                 //    usersElement.style.display = 'none';
                                                                 //else
-                                                                    usersElement.style.display = 'block';
+                                                                usersElement.style.display = 'block';
 
                                                                 usersCountElement.innerHTML = 'Отсутствуют в группе: ' + notExistedUsersCount;
                                                                 notExistedUsersCount = 0;
 
                                                             },
                                                             onFailure: function(e) {
-																widget.communityUsersWithoutGroup = widget.communityUsers;
-																usersElement.style.display = 'block';
-                                                                console.log(widget.communityUsersWithoutGroup);
+                                                                widget.communityUsersWithoutGroup = widget.communityUsers;
+                                                                usersElement.style.display = 'block';
+
+																addUsersToContainer([]);
                                                             }
                                                         }
                                                         WAFData.authenticatedRequest(userGroupUsersQuery, requestUsers);
@@ -425,68 +448,68 @@
                                 //});
                                 var loadingIndex = 0;
 
-                               // for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
-                                    const item = widget.communityUsersWithoutGroup[0];
+                                // for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
+                                const item = widget.communityUsersWithoutGroup[0];
 
-                                    var requestAddGroupUsers = {
-                                        method: 'PATCH',
-                                        async: true,
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        data: JSON.stringify([{
-                                            "op": "add",
-                                            "path": "/groupMembers",
-                                            "value": {
-                                                "@id": "iam:" + item.username
-                                            }
-                                        }]),
-                                        onComplete: function(response, headers, xhr) {
-											loadingIndex++;
-											
-                                            if (loadingIndex >= widget.communityUsersWithoutGroup.length - 2) {
-                                                spinner.hide();
-                                                widget.communitySelect.enable();
-                                                widget.groupSelect.enable();
-
-                                                //  widget.groupSelect.select(0);
-                                                //  widget.groupSelect.select(widget.selectedUserGroupId);
-                                            }
-
-                                            widget.groupSelect.select(0);
-                                            widget.groupSelect.select(widget.selectedUserGroupId);
-                                        },
-                                        onFailure: function(e) {
-                                            loadingIndex++;
-                                            console.log('WTF user', item);
-                                            //console.log(e);
+                                var requestAddGroupUsers = {
+                                    method: 'PATCH',
+                                    async: true,
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    data: JSON.stringify([{
+                                        "op": "add",
+                                        "path": "/groupMembers",
+                                        "value": {
+                                            "@id": "iam:" + item.username
                                         }
+                                    }]),
+                                    onComplete: function(response, headers, xhr) {
+                                        loadingIndex++;
+
+                                        if (loadingIndex >= widget.communityUsersWithoutGroup.length - 2) {
+                                            spinner.hide();
+                                            widget.communitySelect.enable();
+                                            widget.groupSelect.enable();
+
+                                            //  widget.groupSelect.select(0);
+                                            //  widget.groupSelect.select(widget.selectedUserGroupId);
+                                        }
+
+                                        widget.groupSelect.select(0);
+                                        widget.groupSelect.select(widget.selectedUserGroupId);
+                                    },
+                                    onFailure: function(e) {
+                                        loadingIndex++;
+                                        console.log('WTF user', item);
+                                        //console.log(e);
                                     }
-                                    WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
+                                }
+                                WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
 
-									console.log(loadingIndex);
-                                    // var requestAddGroupUsers = {
-                                    //     method: 'PATCH',
-                                    //     async: true,
-                                    //     headers: {
-                                    //         'Content-Type': 'application/json'
-                                    //     },
-                                    //     data: JSON.stringify(userGroupItems),
-                                    //     onComplete: function(response, headers, xhr) {
-                                    //         spinner.hide();
-                                    //         widget.communitySelect.enable();
-                                    //         widget.groupSelect.enable();
+                                console.log(loadingIndex);
+                                // var requestAddGroupUsers = {
+                                //     method: 'PATCH',
+                                //     async: true,
+                                //     headers: {
+                                //         'Content-Type': 'application/json'
+                                //     },
+                                //     data: JSON.stringify(userGroupItems),
+                                //     onComplete: function(response, headers, xhr) {
+                                //         spinner.hide();
+                                //         widget.communitySelect.enable();
+                                //         widget.groupSelect.enable();
 
-                                    //         widget.groupSelect.select(0);
-                                    //         widget.groupSelect.select(widget.selectedUserGroupId);
-                                    //     },
-                                    //     onFailure: function(e) {
-                                    //         console.log(e);
-                                    //     }
-                                    // }
-                                    // WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
+                                //         widget.groupSelect.select(0);
+                                //         widget.groupSelect.select(widget.selectedUserGroupId);
+                                //     },
+                                //     onFailure: function(e) {
+                                //         console.log(e);
+                                //     }
+                                // }
+                                // WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
 
-                               // };
+                                // };
                             });
 
                             wrapElement(button).inject(buttonsBar);

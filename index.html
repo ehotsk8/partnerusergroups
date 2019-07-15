@@ -121,6 +121,8 @@
                                         var userGroupByUserQuery = userGroupURL + '/3drdfpersist/v0/classes/foaf:Group?tenant=dstenant:' +
                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Properties&$orderby=name&$where=?x where %7B ?x dskern:owner iam:' +
                                             response.name + ' %7D';
+											
+										console.log(response);
 
                                         var requestObjectStatusx = {
                                             method: 'GET',
@@ -171,13 +173,23 @@
                                                                             //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
 
 
-                                                                            //https://dspart001-eu1-partners-space.3dexperience.3ds.com/enovia/resources/modeler/pno/person/pid:40ee43a6a1dc824c50795dac40cb6dd0																			
+                                                                            //https://dspart001-eu1-partners-space.3dexperience.3ds.com/enovia/resources/modeler/pno/person/pid:40ee43a6a1dc824c50795dac40cb6dd0	
+																			var collabSpace = response.collabspaces[0];
+																			var roleName = collabSpace.couples[0].role.name + '.';
+																			var orgName = collabSpace.couples[0].organization.name + '.';
+																			var collabSpaceName = collabSpace.couples[0].name;
+
                                                                             var request = {
                                                                                 method: 'GET',
                                                                                 async: true,
+                                                                                headers: {
+                                                                                    "SecurityContext": encodeURIComponent(roleName + orgName + collabSpaceName),
+																					//"Owner.My org2.My Collab Space"),
+																					'ENO_CSRF_TOKEN': ''
+                                                                                }
                                                                                 onComplete: function(response, headers, xhr) {
                                                                                     var response = JSON.parse(response);
-																					console.log(response);
+                                                                                    console.log(response);
                                                                                 }
                                                                             }
 

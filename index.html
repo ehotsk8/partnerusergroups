@@ -51,7 +51,6 @@
                     }).inject(buttonsBar).hide();
 
                     var imgContainer = document.querySelector('#users');
-                    imgContainer.style.display = 'none';
 
 
                     function addImg(src, nickname, parent, isExist) {
@@ -179,8 +178,6 @@
                                                                         addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
                                                                     }
                                                                 });
-
-
 
                                                                 if (notExistedUsersCount == 0)
                                                                     usersElement.style.display = 'none';

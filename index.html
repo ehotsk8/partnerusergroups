@@ -29,7 +29,10 @@
 
                     var containerx = document.querySelector('#button-bar');
                     containerx.innerHTML = '';
-                    var spinner = new Spinner().inject(containerx).show();
+					var usersCountElement = document.querySelector('#users-count');
+					usersCountElement.innerHTML = '';
+					
+					var spinner = new Spinner().inject(containerx).show();
 
                     var statusLoading = UWA.Element("div", {
                         styles: {
@@ -38,7 +41,6 @@
                     }).inject(containerx).hide();
 
                     var imgContainer = document.querySelector('#users');
-                    imgContainer.innerHTML = '';
                     var usersElement = document.querySelector('#users-container');
 
                     function addImg(src, nickname, parent, isExist) {
@@ -170,7 +172,7 @@
                                                                     }
                                                                 });
 
-                                                                var usersCountElement = document.querySelector('#users-count');
+                                                          
                                                                 var usersElement = document.querySelector('#users-container');
 
                                                                 if (notExistedUsersCount == 0)
@@ -639,6 +641,7 @@
         }
         
         .card-title {
+			margin: 5px 0 0 0;
             color: #272727;
         }
     </style>

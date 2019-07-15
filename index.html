@@ -448,6 +448,8 @@
                                             }
                                         },
                                         onFailed: function(e) {
+											loadingIndex++;
+											console.log('WTF user', item);
                                             console.log(e);
                                         }
                                     }

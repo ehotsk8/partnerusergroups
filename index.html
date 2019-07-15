@@ -123,8 +123,6 @@
                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Properties&$orderby=name&$where=?x where %7B ?x dskern:owner iam:' +
                                             response.name + ' %7D';
 											
-										console.log(response);
-
                                         var requestObjectStatusx = {
                                             method: 'GET',
                                             async: true,
@@ -252,7 +250,7 @@
                                         WAFData.authenticatedRequest(userGroupByUserQuery, requestObjectStatusx);
                                     }
                                 }
-                                WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person?current=true', requestObjectStatus);
+                                WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person?current=true&select=collabspaces', requestObjectStatus);
                             };
 
 

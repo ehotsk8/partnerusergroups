@@ -281,6 +281,14 @@
 
                                             //console.log(response);
 
+											function showGroups() {
+												widget.communitySelect.enable();
+                                                isEnd = true;
+                                                spinner.hide();
+                                                statusLoading.hide();
+                                                inputContainer.style.display = 'block';
+											}
+											
                                             if (response.result.length > 0) {
                                                 if (statusLoading.isHidden())
                                                     statusLoading.show();
@@ -296,12 +304,12 @@
                                                 widget.isRefreshed = false;
                                                 
                                             } else {
-                                                widget.communitySelect.enable();
-                                                isEnd = true;
-                                                spinner.hide();
-                                                statusLoading.hide();
-                                                inputContainer.style.display = 'block';
+												showGroups();
                                             }
+											
+											if(widget.isRefreshed) {
+												showGroups();
+											}
 											
                                             console.log(widget.communityUsers);
                                         },

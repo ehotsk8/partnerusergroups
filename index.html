@@ -352,22 +352,22 @@
                                 var userGroupItems = [];
 
                                 //for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
-                                for (let index = 0; index < 10; index++) {
+                                for (let index = 0; index < 2; index++) {
 
                                     const item = widget.communityUsersWithoutGroup[index];
-									if(item.user_tenant_status == 1){
-                                    userGroupItems.push({
-                                        "op": "add",
-                                        "path": "/groupMembers",
-                                        "value": {
-                                            "@id": "iam:" + item.username
-                                        }
-                                    });
-									}
+                                    if (item.user_tenant_status == 1) {
+                                        userGroupItems.push({
+                                            "op": "add",
+                                            "path": "/groupMembers",
+                                            "value": {
+                                                "@id": "iam:" + item.username
+                                            }
+                                        });
+                                    }
 
                                 }
-								
-								console.log(userGroupItems);
+
+                                console.log(userGroupItems);
 
                                 // widget.communityUsersWithoutGroup.forEach(function(item) {
                                 //     userGroupItems.push({
@@ -477,7 +477,11 @@
 
         function widgetLoading() {
             if (widget) {
-                executeWidgetCode();
+                widget.addEvents({
+                    onLoad: executeWidgetCode,
+                    onRefresh: executeWidgetCode
+                });
+
             } else {
                 setTimeout(widgetLoading, 100);
             }

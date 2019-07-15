@@ -165,35 +165,33 @@
 
                                                                 widget.groupUsersList = response.member;
 
-                                                                var collabSpace = currentUser.collabspaces[0];
-                                                                var roleName = collabSpace.couples[0].role.name + '.';
-                                                                var orgName = collabSpace.couples[0].organization.name + '.';
-                                                                var collabSpaceName = collabSpace.name;
+                                                                // var collabSpace = currentUser.collabspaces[0];
+                                                                // var roleName = collabSpace.couples[0].role.name + '.';
+                                                                // var orgName = collabSpace.couples[0].organization.name + '.';
+                                                                // var collabSpaceName = collabSpace.name;
 
-                                                                var request = {
-                                                                    method: 'GET',
-                                                                    async: true,
-                                                                    headers: {
-                                                                        "SecurityContext": encodeURIComponent(roleName + orgName + collabSpaceName),
-                                                                    },
-                                                                    onComplete: function(response, headers, xhr) {
-                                                                        //var response = JSON.parse(response);
-                                                                        console.log(response);
-                                                                    },
-																	 onFailed: function(e) {
-																		console.log(e);
-																	}	
-                                                                }
+                                                                // var request = {
+                                                                //     method: 'GET',
+                                                                //     async: true,
+                                                                //     headers: {
+                                                                //         "SecurityContext": encodeURIComponent(roleName + orgName + collabSpaceName),
+                                                                //     },
+                                                                //     onComplete: function(response, headers, xhr) {
+                                                                //         //var response = JSON.parse(response);
+                                                                //         console.log(response);
+                                                                //     },
+                                                                // 	 onFailed: function(e) {
+                                                                // 		console.log(e);
+                                                                // 	}	
+                                                                // }
 
-                                                                WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/' + 'nadiya' + '?select=firstname&select=lastname&select=isactive', request);//widget.communityUsers[0].id, request);
+                                                                //WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/' + 'nadiya' + '?select=firstname&select=lastname&select=isactive', request); //widget.communityUsers[0].id, request);
 
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {
                                                                         var isUserExist = response.member.filter(function(groupUser) {
                                                                             //var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
                                                                             //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
-
-
 
                                                                             //return isSameName || ('iam:' + user.login) === groupUser['@id'];
                                                                             return ('iam:' + user.login) === groupUser['@id'];
@@ -403,21 +401,9 @@
                                 var userGroupItems = [];
 
                                 //for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
-                                for (let index = 0; index < 1; index++) {
+                                // for (let index = 0; index < 1; index++) {
 
-                                    const item = widget.communityUsersWithoutGroup[index];
-                                    userGroupItems.push({
-                                        "op": "add",
-                                        "path": "/groupMembers",
-                                        "value": {
-                                            "@id": "iam:" + item.username
-                                        }
-                                    });
-                                }
-
-                                console.log(userGroupItems, widget.communityUsersWithoutGroup, widget.groupUsersList);
-
-                                // widget.communityUsersWithoutGroup.forEach(function(item) {
+                                //     const item = widget.communityUsersWithoutGroup[index];
                                 //     userGroupItems.push({
                                 //         "op": "add",
                                 //         "path": "/groupMembers",
@@ -425,30 +411,71 @@
                                 //             "@id": "iam:" + item.username
                                 //         }
                                 //     });
-                                // });
+                                // }
 
-                                var requestAddGroupUsers = {
-                                    method: 'PATCH',
-                                    async: true,
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    data: JSON.stringify(userGroupItems),
-                                    onComplete: function(response, headers, xhr) {
-                                        spinner.hide();
-                                        widget.communitySelect.enable();
-                                        widget.groupSelect.enable();
+                                console.log(userGroupItems, widget.communityUsersWithoutGroup, widget.groupUsersList);
 
-                                        widget.groupSelect.select(0);
-                                        widget.groupSelect.select(widget.selectedUserGroupId);
-                                    },
-                                    onFailed: function(e) {
-                                        console.log(e);
+                                //widget.communityUsersWithoutGroup.forEach(function(item) {
+                                //});
+								var loadingIndex = 0;
+								
+                                for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
+                                    const item = widget.communityUsersWithoutGroup[index];
+
+                                    var requestAddGroupUsers = {
+                                        method: 'PATCH',
+                                        async: true,
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        data: JSON.stringify([{
+                                            "op": "add",
+                                            "path": "/groupMembers",
+                                            "value": {
+                                                "@id": "iam:" + item.username
+                                            }
+                                        }]),
+                                        onComplete: function(response, headers, xhr) {
+											loadingIndex++;
+											
+											if (loadingIndex === widget.communityUsersWithoutGroup.length - 1) {
+                                                spinner.hide();
+                                                widget.communitySelect.enable();
+                                                widget.groupSelect.enable();
+
+                                                widget.groupSelect.select(0);
+                                                widget.groupSelect.select(widget.selectedUserGroupId);
+                                            }
+                                        },
+                                        onFailed: function(e) {
+                                            console.log(e);
+                                        }
                                     }
-                                }
-                                WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
+                                    WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
 
 
+                                    // var requestAddGroupUsers = {
+                                    //     method: 'PATCH',
+                                    //     async: true,
+                                    //     headers: {
+                                    //         'Content-Type': 'application/json'
+                                    //     },
+                                    //     data: JSON.stringify(userGroupItems),
+                                    //     onComplete: function(response, headers, xhr) {
+                                    //         spinner.hide();
+                                    //         widget.communitySelect.enable();
+                                    //         widget.groupSelect.enable();
+
+                                    //         widget.groupSelect.select(0);
+                                    //         widget.groupSelect.select(widget.selectedUserGroupId);
+                                    //     },
+                                    //     onFailed: function(e) {
+                                    //         console.log(e);
+                                    //     }
+                                    // }
+                                    // WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
+
+                                };
                             });
 
                             wrapElement(button).inject(buttonsBar);

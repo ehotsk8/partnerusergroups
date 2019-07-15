@@ -431,8 +431,10 @@
                                 //for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
                                 //    const item = widget.communityUsersWithoutGroup[index];
 								
-								var communityUsersCount = widget.communityUsersWithoutGroup.length;
-								
+								let communityUsersCount = widget.communityUsersWithoutGroup.length;
+								let communityUsersBuffer = [];
+								Array.prototype.push.apply(communityUsersBuffer, widget.communityUsersWithoutGroup);
+
                                 function addUserToGroup(index) {
 									console.log(index, communityUsersCount);
 									
@@ -444,7 +446,7 @@
                                         return;
                                     }
 
-                                    const item = widget.communityUsersWithoutGroup[index];
+                                    let item = communityUsersBuffer[index];
                                     var requestAddGroupUsers = {
                                         method: 'PATCH',
                                         async: true,

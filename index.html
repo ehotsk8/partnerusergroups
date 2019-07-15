@@ -27,7 +27,7 @@
                 ],
                 function(Button, Select, Toggle, Text, WAFData, Spinner) {
                     widget.loadingIndex = 0;
-					
+
                     var usersElement = document.querySelector('#users-container');
                     usersElement.style.display = 'none';
 
@@ -430,70 +430,67 @@
                                 //widget.communityUsersWithoutGroup.forEach(function(item) {
                                 //});
 
-                                // for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
-                                const item = widget.communityUsersWithoutGroup[0];
+                                for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
+                                    const item = widget.communityUsersWithoutGroup[index];
 
-                                var requestAddGroupUsers = {
-                                    method: 'PATCH',
-                                    async: true,
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    data: JSON.stringify([{
-                                        "op": "add",
-                                        "path": "/groupMembers",
-                                        "value": {
-                                            "@id": "iam:" + item.username
+                                    var requestAddGroupUsers = {
+                                        method: 'PATCH',
+                                        async: true,
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        data: JSON.stringify([{
+                                            "op": "add",
+                                            "path": "/groupMembers",
+                                            "value": {
+                                                "@id": "iam:" + item.username
+                                            }
+                                        }]),
+                                        onComplete: function(response, headers, xhr) {
+                                            widget.loadingIndex++;
+
+                                            if (widget.loadingIndex >= widget.communityUsersWithoutGroup.length - 1) {
+                                                spinner.hide();
+                                                widget.communitySelect.enable();
+                                                widget.groupSelect.enable();
+                                                widget.loadingIndex = 0;
+                                            }
+
+                                            console.log(widget.loadingIndex);
+
+                                            widget.groupSelect.select(0);
+                                            widget.groupSelect.select(widget.selectedUserGroupId);
+                                        },
+                                        onFailure: function(e) {
+                                            widget.loadingIndex++;
+                                            console.log('WTF user', item);
+                                            //console.log(e);
                                         }
-                                    }]),
-                                    onComplete: function(response, headers, xhr) {
-                                        widget.loadingIndex++;
-
-                                        if (widget.loadingIndex >= widget.communityUsersWithoutGroup.length - 1) {
-                                            spinner.hide();
-                                            widget.communitySelect.enable();
-                                            widget.groupSelect.enable();
-                                            widget.loadingIndex = 0;
-
-                                            //  widget.groupSelect.select(0);
-                                            //  widget.groupSelect.select(widget.selectedUserGroupId);
-                                        }
-										
-										console.log(widget.loadingIndex);
-
-                                        widget.groupSelect.select(0);
-                                        widget.groupSelect.select(widget.selectedUserGroupId);
-                                    },
-                                    onFailure: function(e) {
-                                        widget.loadingIndex++;
-                                        console.log('WTF user', item);
-                                        //console.log(e);
                                     }
-                                }
-                                WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
+                                    WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
 
-                                // var requestAddGroupUsers = {
-                                //     method: 'PATCH',
-                                //     async: true,
-                                //     headers: {
-                                //         'Content-Type': 'application/json'
-                                //     },
-                                //     data: JSON.stringify(userGroupItems),
-                                //     onComplete: function(response, headers, xhr) {
-                                //         spinner.hide();
-                                //         widget.communitySelect.enable();
-                                //         widget.groupSelect.enable();
+                                    // var requestAddGroupUsers = {
+                                    //     method: 'PATCH',
+                                    //     async: true,
+                                    //     headers: {
+                                    //         'Content-Type': 'application/json'
+                                    //     },
+                                    //     data: JSON.stringify(userGroupItems),
+                                    //     onComplete: function(response, headers, xhr) {
+                                    //         spinner.hide();
+                                    //         widget.communitySelect.enable();
+                                    //         widget.groupSelect.enable();
 
-                                //         widget.groupSelect.select(0);
-                                //         widget.groupSelect.select(widget.selectedUserGroupId);
-                                //     },
-                                //     onFailure: function(e) {
-                                //         console.log(e);
-                                //     }
-                                // }
-                                // WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
+                                    //         widget.groupSelect.select(0);
+                                    //         widget.groupSelect.select(widget.selectedUserGroupId);
+                                    //     },
+                                    //     onFailure: function(e) {
+                                    //         console.log(e);
+                                    //     }
+                                    // }
+                                    // WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
 
-                                // };
+                                };
                             });
 
                             wrapElement(button).inject(buttonsBar);

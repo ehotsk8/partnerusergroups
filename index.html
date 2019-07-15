@@ -430,11 +430,13 @@
 
                                 //for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
                                 //    const item = widget.communityUsersWithoutGroup[index];
-
+								
+								var communityUsersCount = widget.communityUsersWithoutGroup.length;
+								
                                 function addUserToGroup(index) {
-									console.log(index, widget.communityUsersWithoutGroup.length, index >= widget.communityUsersWithoutGroup.length - 1);
+									console.log(index, communityUsersCount);
 									
-                                    if (index >= widget.communityUsersWithoutGroup.length - 1) {
+                                    if (index >= communityUsersCount - 1) {
                                         spinner.hide();
                                         widget.communitySelect.enable();
                                         widget.groupSelect.enable();

@@ -186,9 +186,7 @@
                                                                 // }
 
                                                                 //WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/' + 'nadiya' + '?select=firstname&select=lastname&select=isactive', request); //widget.communityUsers[0].id, request);
-																
-																console.log(response);
-																
+																																
                                                                 if (response.member.length > 0) {
                                                                     widget.communityUsers.forEach(function(user) {
                                                                         if (user) {
@@ -222,6 +220,7 @@
 
                                                             },
                                                             onFailed: function(e) {
+																widget.communityUsersWithoutGroup = widget.communityUsers;
                                                                 console.log(e);
                                                             }
                                                         }

@@ -118,17 +118,17 @@
                                     async: true,
                                     onComplete: function(response, headers, xhr) {
                                         var response = JSON.parse(xhr.response);
-										var currentUser = response;
+                                        var currentUser = response;
                                         var userGroupByUserQuery = userGroupURL + '/3drdfpersist/v0/classes/foaf:Group?tenant=dstenant:' +
                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Properties&$orderby=name&$where=?x where %7B ?x dskern:owner iam:' +
                                             response.name + ' %7D';
-											
+
                                         var requestObjectStatusx = {
                                             method: 'GET',
                                             async: true,
                                             onComplete: function(response, headers, xhr) {
                                                 var response = JSON.parse(xhr.response);
-									
+
 
                                                 spinner.hide();
 
@@ -165,6 +165,25 @@
 
                                                                 widget.groupUsersList = response.member;
 
+                                                                var collabSpace = currentUser.collabspaces[0];
+                                                                var roleName = collabSpace.couples[0].role.name + '.';
+                                                                var orgName = collabSpace.couples[0].organization.name + '.';
+                                                                var collabSpaceName = collabSpace.name;
+
+                                                                var request = {
+                                                                    method: 'GET',
+                                                                    async: true,
+                                                                    headers: {
+                                                                        "SecurityContext": encodeURIComponent(roleName + orgName + collabSpaceName),
+                                                                    },
+                                                                    onComplete: function(response, headers, xhr) {
+                                                                        var response = JSON.parse(response);
+                                                                        console.log(response);
+                                                                    }
+                                                                }
+
+                                                                WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/pid:' + widget.communityUsers[0].id, request);
+
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {
                                                                         var isUserExist = response.member.filter(function(groupUser) {
@@ -172,27 +191,7 @@
                                                                             //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
 
 
-                                                                            //https://dspart001-eu1-partners-space.3dexperience.3ds.com/enovia/resources/modeler/pno/person/pid:40ee43a6a1dc824c50795dac40cb6dd0	
-																			var collabSpace = currentUser.collabspaces[0];
-																			var roleName = collabSpace.couples[0].role.name + '.';
-																			var orgName = collabSpace.couples[0].organization.name + '.';
-																			var collabSpaceName = collabSpace.name;
 
-                                                                            var request = {
-                                                                                method: 'GET',
-                                                                                async: true,
-                                                                                headers: {
-                                                                                    "SecurityContext": encodeURIComponent(roleName + orgName + collabSpaceName),
-																					//"Owner.My org2.My Collab Space"),
-																					'ENO_CSRF_TOKEN': 'YYAZ-GKUM-BS8J-FK5A-8VJU-9OY3-3RLE-2RCH'
-                                                                                },
-                                                                                onComplete: function(response, headers, xhr) {
-                                                                                    var response = JSON.parse(response);
-                                                                                    console.log(response);
-                                                                                }
-                                                                            }
-
-                                                                            WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/pid:' + user.id, request);
                                                                             //return isSameName || ('iam:' + user.login) === groupUser['@id'];
                                                                             return ('iam:' + user.login) === groupUser['@id'];
                                                                         }).length > 0;

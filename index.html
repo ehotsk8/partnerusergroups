@@ -272,7 +272,7 @@
                                         onComplete: function(response, headers, xhr) {
                                             var response = JSON.parse(xhr.response);
 
-                                            console.log(response);
+                                            //console.log(response);
 
                                             if (response.result.length > 0) {
                                                 if (statusLoading.isHidden())
@@ -294,6 +294,8 @@
                                                 statusLoading.hide();
                                                 inputContainer.style.display = 'block';
                                             }
+											
+											console.log(widget.communityUsers);
                                         },
                                         onFailed: function(e) {
                                             console.log(e);

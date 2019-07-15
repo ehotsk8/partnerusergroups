@@ -28,7 +28,8 @@
                 function(Button, Select, Toggle, Text, WAFData, Spinner) {
 
                     var usersElement = document.querySelector('#users-container');
-
+					usersElement.style.display = 'none';
+					
                     var buttonsBar = document.querySelector('#button-bar');
                     buttonsBar.innerHTML = '';
 					
@@ -284,15 +285,16 @@
                                                 if (statusLoading.isHidden())
                                                     statusLoading.show();
 
-                                                statusLoading.innerHTML = 'Загружено ' + (response.result.length < pageIndex ? response.result.length : pageIndex * limit) + ' из ' + response.nb_result;
+                                                statusLoading.innerHTML = 'Загружено ' + (response.result.length < limit ? response.result.length : pageIndex * limit) + ' из ' + response.nb_result;
                                                 Array.prototype.push.apply(widget.communityUsers, response.result);
+												
 
-                                                if (widget.isRefreshed) {
-                                                    return;
+                                                if (!widget.isRefreshed) {
+													getAllUsers(id, ++pageIndex);
                                                 }
 
                                                 widget.isRefreshed = false;
-                                                getAllUsers(id, ++pageIndex);
+                                                
                                             } else {
                                                 widget.communitySelect.enable();
                                                 isEnd = true;
@@ -300,7 +302,7 @@
                                                 statusLoading.hide();
                                                 inputContainer.style.display = 'block';
                                             }
-
+											
                                             console.log(widget.communityUsers);
                                         },
                                         onFailed: function(e) {

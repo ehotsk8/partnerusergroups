@@ -154,6 +154,8 @@
                                                             selectedUserGroupId + '/groupMembers?tenant=dstenant:' +
                                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999';
 
+														var notExistedUsersCount = 0;
+
                                                         function addUsersToContainer(members) {
                                                             widget.communityUsers.forEach(function(user) {
                                                                 if (user) {
@@ -180,7 +182,6 @@
                                                             async: true,
                                                             onComplete: function(response, headers, xhr) {
                                                                 var response = JSON.parse(response);
-                                                                var notExistedUsersCount = 0;
 
                                                                 imgContainer.innerHTML = '';
 
@@ -210,24 +211,6 @@
 
                                                                 if (response.member.length > 0) {
 																	addUsersToContainer(response.member);
-                                                                    // widget.communityUsers.forEach(function(user) {
-                                                                    //     if (user) {
-                                                                    //         var isUserExist = response.member.filter(function(groupUser) {
-                                                                    //             //var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
-                                                                    //             //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
-
-                                                                    //             //return isSameName || ('iam:' + user.login) === groupUser['@id'];
-                                                                    //             return ('iam:' + user.login) === groupUser['@id'];
-                                                                    //         }).length > 0;
-
-                                                                    //         if (!isUserExist) {
-                                                                    //             notExistedUsersCount++;
-                                                                    //             widget.communityUsersWithoutGroup.push(user);
-                                                                    //         }
-
-                                                                    //         addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
-                                                                    //     }
-                                                                    // });
                                                                 } else {
                                                                     widget.communityUsersWithoutGroup = widget.communityUsers;
                                                                 }
@@ -246,6 +229,7 @@
                                                                 usersElement.style.display = 'block';
 
 																addUsersToContainer([]);
+																notExistedUsersCount = 0;
                                                             }
                                                         }
                                                         WAFData.authenticatedRequest(userGroupUsersQuery, requestUsers);

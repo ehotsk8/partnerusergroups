@@ -300,15 +300,13 @@
                                                 if (!widget.isRefreshed) {
 													getAllUsers(id, ++pageIndex);
                                                 }
-
-                                                widget.isRefreshed = false;
-                                                
                                             } else {
 												showGroups();
                                             }
 											
 											if(widget.isRefreshed) {
 												showGroups();
+												widget.isRefreshed = false;
 											}
 											
                                             console.log(widget.communityUsers);

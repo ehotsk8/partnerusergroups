@@ -4,7 +4,7 @@
 <head>
     <meta charset='utf-8' />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta name="autoRefresh" content="-1" />
     <meta name="author" content="ARV2" />
 
 
@@ -167,9 +167,22 @@
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {
                                                                         var isUserExist = response.member.filter(function(groupUser) {
-																			var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
-																				&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
-																				
+                                                                            //var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
+                                                                            //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
+
+
+                                                                            //https://dspart001-eu1-partners-space.3dexperience.3ds.com/enovia/resources/modeler/pno/person/pid:40ee43a6a1dc824c50795dac40cb6dd0																			
+                                                                            var request = {
+                                                                                method: 'GET',
+                                                                                async: true,
+                                                                                onComplete: function(response, headers, xhr) {
+                                                                                    var response = JSON.parse(response);
+																					console.log(response);
+                                                                                }
+                                                                            }
+
+                                                                            WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/pid:' + user.id, request);
+                                                                            //return isSameName || ('iam:' + user.login) === groupUser['@id'];
                                                                             return isSameName || ('iam:' + user.login) === groupUser['@id'];
                                                                         }).length > 0;
 

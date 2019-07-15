@@ -167,7 +167,7 @@
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {
                                                                         var isUserExist = response.member.filter(function(groupUser) {
-                                                                            return user.first_name === groupUser.givenName.member[0] && user.last_name === groupUser.familyName.member[0];
+                                                                            return ('iam:' + user.login) === groupUser['@id'];
                                                                         }).length > 0;
 
                                                                         if (!isUserExist) {

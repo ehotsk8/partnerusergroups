@@ -187,24 +187,28 @@
 
                                                                 //WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/' + 'nadiya' + '?select=firstname&select=lastname&select=isactive', request); //widget.communityUsers[0].id, request);
 
-                                                                widget.communityUsers.forEach(function(user) {
-                                                                    if (user) {
-                                                                        var isUserExist = response.member.filter(function(groupUser) {
-                                                                            //var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
-                                                                            //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
+                                                                if (response.member.length > 0) {
+                                                                    widget.communityUsers.forEach(function(user) {
+                                                                        if (user) {
+                                                                            var isUserExist = response.member.filter(function(groupUser) {
+                                                                                //var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
+                                                                                //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
 
-                                                                            //return isSameName || ('iam:' + user.login) === groupUser['@id'];
-                                                                            return ('iam:' + user.login) === groupUser['@id'];
-                                                                        }).length > 0;
+                                                                                //return isSameName || ('iam:' + user.login) === groupUser['@id'];
+                                                                                return ('iam:' + user.login) === groupUser['@id'];
+                                                                            }).length > 0;
 
-                                                                        if (!isUserExist) {
-                                                                            notExistedUsersCount++;
-                                                                            widget.communityUsersWithoutGroup.push(user);
+                                                                            if (!isUserExist) {
+                                                                                notExistedUsersCount++;
+                                                                                widget.communityUsersWithoutGroup.push(user);
+                                                                            }
+
+                                                                            addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
                                                                         }
-
-                                                                        addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
-                                                                    }
-                                                                });
+                                                                    });
+                                                                } else {
+																	widget.communityUsersWithoutGroup = widget.communityUsers;
+																}
 
                                                                 if (notExistedUsersCount == 0)
                                                                     usersElement.style.display = 'none';
@@ -417,8 +421,8 @@
 
                                 //widget.communityUsersWithoutGroup.forEach(function(item) {
                                 //});
-								var loadingIndex = 0;
-								
+                                var loadingIndex = 0;
+
                                 for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
                                     const item = widget.communityUsersWithoutGroup[index];
 
@@ -436,20 +440,23 @@
                                             }
                                         }]),
                                         onComplete: function(response, headers, xhr) {
-											loadingIndex++;
-											
-											if (loadingIndex === widget.communityUsersWithoutGroup.length - 1) {
+                                            loadingIndex++;
+
+                                            if (loadingIndex === widget.communityUsersWithoutGroup.length - 1) {
                                                 spinner.hide();
                                                 widget.communitySelect.enable();
                                                 widget.groupSelect.enable();
 
-                                                widget.groupSelect.select(0);
-                                                widget.groupSelect.select(widget.selectedUserGroupId);
+                                                //  widget.groupSelect.select(0);
+                                                //  widget.groupSelect.select(widget.selectedUserGroupId);
                                             }
+
+                                            widget.groupSelect.select(0);
+                                            widget.groupSelect.select(widget.selectedUserGroupId);
                                         },
                                         onFailed: function(e) {
-											loadingIndex++;
-											console.log('WTF user', item);
+                                            loadingIndex++;
+                                            console.log('WTF user', item);
                                             console.log(e);
                                         }
                                     }

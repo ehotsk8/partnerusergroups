@@ -40,6 +40,8 @@
 
                     var container = document.querySelector('#content-container');
                     container.innerHTML = '';
+					
+					var usersIconsCotaninerElement = document.querySelector('#users');
 
                     var spinner = new Spinner().inject(buttonsBar).show();
 
@@ -142,7 +144,7 @@
                                                 });
 
                                                 function loadGroupUsers(groupSelect) {
-
+													usersIconsCotaninerElement.innerHTML = '';
                                                     widget.communityUsersWithoutGroup = [];
 
                                                     if (widget.changeToggle.isChecked()) {
@@ -375,8 +377,6 @@
 
                             loadUsers(communitySelect.getValue()[0]);
 
-                            // communitySelect.select(widget.getValue('DEFAULT_COMMUNITY'));
-
                             changeView(true);
 
                             var changeToggle = new Toggle({
@@ -410,33 +410,11 @@
 
                                 var userGroupItems = [];
 
-                                //for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
-                                // for (let index = 0; index < 1; index++) {
-
-                                //     const item = widget.communityUsersWithoutGroup[index];
-                                //     userGroupItems.push({
-                                //         "op": "add",
-                                //         "path": "/groupMembers",
-                                //         "value": {
-                                //             "@id": "iam:" + item.username
-                                //         }
-                                //     });
-                                // }
-
-                                console.log(widget.communityUsersWithoutGroup);
-
-                                //widget.communityUsersWithoutGroup.forEach(function(item) {
-                                //});
-
-                                //for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
-                                //    const item = widget.communityUsersWithoutGroup[index];
-								
 								let communityUsersCount = widget.communityUsersWithoutGroup.length;
 								let communityUsersBuffer = [];
 								Array.prototype.push.apply(communityUsersBuffer, widget.communityUsersWithoutGroup);
 
                                 function addUserToGroup(index) {
-									console.log(index, communityUsersCount);
 									
                                     if (index >= communityUsersCount - 1) {
                                         spinner.hide();
@@ -477,28 +455,6 @@
 
                                 addUserToGroup(0);
 
-                                // var requestAddGroupUsers = {
-                                //     method: 'PATCH',
-                                //     async: true,
-                                //     headers: {
-                                //         'Content-Type': 'application/json'
-                                //     },
-                                //     data: JSON.stringify(userGroupItems),
-                                //     onComplete: function(response, headers, xhr) {
-                                //         spinner.hide();
-                                //         widget.communitySelect.enable();
-                                //         widget.groupSelect.enable();
-
-                                //         widget.groupSelect.select(0);
-                                //         widget.groupSelect.select(widget.selectedUserGroupId);
-                                //     },
-                                //     onFailure: function(e) {
-                                //         console.log(e);
-                                //     }
-                                // }
-                                // WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
-
-                                //};
                             });
 
                             wrapElement(button).inject(buttonsBar);

@@ -180,7 +180,7 @@
                                                                 //         //var response = JSON.parse(response);
                                                                 //         console.log(response);
                                                                 //     },
-                                                                // 	 onFailed: function(e) {
+                                                                // 	 onFailure: function(e) {
                                                                 // 		console.log(e);
                                                                 // 	}	
                                                                 // }
@@ -219,9 +219,9 @@
                                                                 notExistedUsersCount = 0;
 
                                                             },
-                                                            onFailed: function(e) {
+                                                            onFailure: function(e) {
 																widget.communityUsersWithoutGroup = widget.communityUsers;
-                                                                console.log(e);
+                                                                //console.log(e);
                                                             }
                                                         }
                                                         WAFData.authenticatedRequest(userGroupUsersQuery, requestUsers);
@@ -339,7 +339,7 @@
                                             }
 
                                         },
-                                        onFailed: function(e) {
+                                        onFailure: function(e) {
                                             console.log(e);
                                         }
                                     }
@@ -455,7 +455,7 @@
                                             widget.groupSelect.select(0);
                                             widget.groupSelect.select(widget.selectedUserGroupId);
                                         },
-                                        onFailed: function(e) {
+                                        onFailure: function(e) {
                                             loadingIndex++;
                                             console.log('WTF user', item);
                                             //console.log(e);
@@ -479,7 +479,7 @@
                                     //         widget.groupSelect.select(0);
                                     //         widget.groupSelect.select(widget.selectedUserGroupId);
                                     //     },
-                                    //     onFailed: function(e) {
+                                    //     onFailure: function(e) {
                                     //         console.log(e);
                                     //     }
                                     // }
@@ -547,7 +547,7 @@
                             load(spaceURL, swymURL, userGroupURL, platformId);
 
                         },
-                        onFailed: function(e) {
+                        onFailure: function(e) {
                             console.log(e);
                         }
                     }

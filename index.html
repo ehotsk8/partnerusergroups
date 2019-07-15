@@ -26,7 +26,8 @@
                     'DS/WAFData/WAFData', 'DS/UIKIT/Spinner'
                 ],
                 function(Button, Select, Toggle, Text, WAFData, Spinner) {
-
+                    widegt.loadingIndex = 0;
+					
                     var usersElement = document.querySelector('#users-container');
                     usersElement.style.display = 'none';
 
@@ -154,7 +155,7 @@
                                                             selectedUserGroupId + '/groupMembers?tenant=dstenant:' +
                                                             platformId + '&$mask=dsaccess:Mask.GroupUI.Members&$skip=0&%24top=9999';
 
-														var notExistedUsersCount = 0;
+                                                        var notExistedUsersCount = 0;
 
                                                         function addUsersToContainer(members) {
                                                             widget.communityUsers.forEach(function(user) {
@@ -174,13 +175,13 @@
 
                                                                     addImg(swymURL + '/api/user/getpicture/login/' + user.login, user.nickname, imgContainer, isUserExist);
                                                                 }
-																
-																
+
+
                                                             });
-															
-															usersElement.style.display = 'block';
-															usersCountElement.innerHTML = 'Отсутствуют в группе ' + notExistedUsersCount + ' из ' + widget.communityUsers.length;
-															notExistedUsersCount = 0;
+
+                                                            usersElement.style.display = 'block';
+                                                            usersCountElement.innerHTML = 'Отсутствуют в группе ' + notExistedUsersCount + ' из ' + widget.communityUsers.length;
+                                                            notExistedUsersCount = 0;
                                                         }
 
                                                         var requestUsers = {
@@ -216,7 +217,7 @@
                                                                 //WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/' + 'nadiya' + '?select=firstname&select=lastname&select=isactive', request); //widget.communityUsers[0].id, request);
 
                                                                 if (response.member.length > 0) {
-																	addUsersToContainer(response.member);
+                                                                    addUsersToContainer(response.member);
                                                                 } else {
                                                                     widget.communityUsersWithoutGroup = widget.communityUsers;
                                                                 }
@@ -226,8 +227,8 @@
                                                                 //else
                                                             },
                                                             onFailure: function(e) {
-																addUsersToContainer([]);
-																                                                                //widget.communityUsersWithoutGroup = widget.communityUsers;
+                                                                addUsersToContainer([]);
+                                                                //widget.communityUsersWithoutGroup = widget.communityUsers;
                                                             }
                                                         }
                                                         WAFData.authenticatedRequest(userGroupUsersQuery, requestUsers);
@@ -424,11 +425,10 @@
                                 //     });
                                 // }
 
-                                console.log(userGroupItems, widget.communityUsersWithoutGroup, widget.groupUsersList);
+                                console.log(widget.communityUsersWithoutGroup);
 
                                 //widget.communityUsersWithoutGroup.forEach(function(item) {
                                 //});
-                                var loadingIndex = 0;
 
                                 // for (let index = 0; index < widget.communityUsersWithoutGroup.length; index++) {
                                 const item = widget.communityUsersWithoutGroup[0];
@@ -447,12 +447,13 @@
                                         }
                                     }]),
                                     onComplete: function(response, headers, xhr) {
-                                        loadingIndex++;
+                                        widegt.loadingIndex++;
 
-                                        if (loadingIndex >= widget.communityUsersWithoutGroup.length - 2) {
+                                        if (widegt.loadingIndex >= widget.communityUsersWithoutGroup.length - 2) {
                                             spinner.hide();
                                             widget.communitySelect.enable();
                                             widget.groupSelect.enable();
+                                            widegt.loadingIndex = 0;
 
                                             //  widget.groupSelect.select(0);
                                             //  widget.groupSelect.select(widget.selectedUserGroupId);
@@ -462,14 +463,14 @@
                                         widget.groupSelect.select(widget.selectedUserGroupId);
                                     },
                                     onFailure: function(e) {
-                                        loadingIndex++;
+                                        widegt.loadingIndex++;
                                         console.log('WTF user', item);
                                         //console.log(e);
                                     }
                                 }
                                 WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
 
-                                console.log(loadingIndex);
+                                console.log(widegt.loadingIndex);
                                 // var requestAddGroupUsers = {
                                 //     method: 'PATCH',
                                 //     async: true,

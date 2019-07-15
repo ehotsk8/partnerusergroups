@@ -210,9 +210,9 @@
 																	widget.communityUsersWithoutGroup = widget.communityUsers;
 																}
 
-                                                                if (notExistedUsersCount == 0)
-                                                                    usersElement.style.display = 'none';
-                                                                else
+                                                                //if (notExistedUsersCount == 0)
+                                                                //    usersElement.style.display = 'none';
+                                                                //else
                                                                     usersElement.style.display = 'block';
 
                                                                 usersCountElement.innerHTML = 'Отсутствуют в группе: ' + notExistedUsersCount;
@@ -221,7 +221,8 @@
                                                             },
                                                             onFailure: function(e) {
 																widget.communityUsersWithoutGroup = widget.communityUsers;
-                                                                //console.log(e);
+																usersElement.style.display = 'block';
+                                                                console.log(widget.communityUsersWithoutGroup);
                                                             }
                                                         }
                                                         WAFData.authenticatedRequest(userGroupUsersQuery, requestUsers);

@@ -449,7 +449,7 @@
                                         onComplete: function(response, headers, xhr) {
                                             widget.loadingIndex++;
 
-                                            if (widget.loadingIndex >= widget.communityUsersWithoutGroup.length - 1) {
+                                            if (widget.loadingIndex === widget.communityUsersWithoutGroup.length - 1) {
                                                 spinner.hide();
                                                 widget.communitySelect.enable();
                                                 widget.groupSelect.enable();
@@ -464,10 +464,11 @@
                                         onFailure: function(e) {
                                             widget.loadingIndex++;
                                             console.log('WTF user', item);
-                                            //console.log(e);
                                         }
                                     }
-                                    WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
+									setTimeout(function() {
+										WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);
+									}, 50);
 
                                     // var requestAddGroupUsers = {
                                     //     method: 'PATCH',

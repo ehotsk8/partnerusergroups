@@ -449,7 +449,7 @@
                                     onComplete: function(response, headers, xhr) {
                                         widget.loadingIndex++;
 
-                                        if (widget.loadingIndex >= widget.communityUsersWithoutGroup.length - 2) {
+                                        if (widget.loadingIndex >= widget.communityUsersWithoutGroup.length - 1) {
                                             spinner.hide();
                                             widget.communitySelect.enable();
                                             widget.groupSelect.enable();

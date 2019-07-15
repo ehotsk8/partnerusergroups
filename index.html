@@ -185,7 +185,7 @@
 																	}	
                                                                 }
 
-                                                                WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/' + 'efv', request);//widget.communityUsers[0].id, request);
+                                                                WAFData.authenticatedRequest(spaceURL + '/resources/modeler/pno/person/' + 'efv' + '?select=firstname&select=lastname&select=isactive', request);//widget.communityUsers[0].id, request);
 
                                                                 widget.communityUsers.forEach(function(user) {
                                                                     if (user) {

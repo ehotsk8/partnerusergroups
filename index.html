@@ -27,21 +27,31 @@
                 ],
                 function(Button, Select, Toggle, Text, WAFData, Spinner) {
 
-                    var containerx = document.querySelector('#button-bar');
-                    containerx.innerHTML = '';
+                    var usersElement = document.querySelector('#users-container');
+
+                    var buttonsBar = document.querySelector('#button-bar');
+                    buttonsBar.innerHTML = '';
+					
                     var usersCountElement = document.querySelector('#users-count');
                     usersCountElement.innerHTML = '';
+					
+                    var inputContainer = document.querySelector('#input-content');
+                    inputContainer.innerHTML = '';
+					
+                    var container = document.querySelector('#content-container');
+                    container.innerHTML = '';
 
-                    var spinner = new Spinner().inject(containerx).show();
+                    var spinner = new Spinner().inject(buttonsBar).show();
 
                     var statusLoading = UWA.Element("div", {
                         styles: {
 
                         },
-                    }).inject(containerx).hide();
+                    }).inject(buttonsBar).hide();
 
                     var imgContainer = document.querySelector('#users');
-                    var usersElement = document.querySelector('#users-container');
+                    imgContainer.style.display = 'none';
+
 
                     function addImg(src, nickname, parent, isExist) {
                         var styleKO = {
@@ -78,11 +88,8 @@
                                 });
                             });
 
-                            var container = document.querySelector('#content-container');
-                            container.innerHTML = '';
-                            var inputContainer = document.querySelector('#input-content');
-                            inputContainer.innerHTML = '';
-                            var buttonsBar = document.querySelector('#button-bar');
+
+
 
                             function wrapElement(element) {
                                 return UWA.Element("div", {
@@ -173,7 +180,6 @@
                                                                 });
 
 
-                                                                var usersElement = document.querySelector('#users-container');
 
                                                                 if (notExistedUsersCount == 0)
                                                                     usersElement.style.display = 'none';
@@ -294,8 +300,8 @@
                                                 statusLoading.hide();
                                                 inputContainer.style.display = 'block';
                                             }
-											
-											console.log(widget.communityUsers);
+
+                                            console.log(widget.communityUsers);
                                         },
                                         onFailed: function(e) {
                                             console.log(e);

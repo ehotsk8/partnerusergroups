@@ -395,7 +395,8 @@
                             var button = new Button({
                                 className: 'primary fullwidth',
                                 value: 'Изменить группу'
-                            })
+                            });
+							button.disable();
 							widget.loadButton = button;
 
                             button.addEvent('onClick', function() {

@@ -41,7 +41,6 @@
                     var container = document.querySelector('#content-container');
                     container.innerHTML = '';
 					
-					var usersIconsCotaninerElement = document.querySelector('#users');
 
                     var spinner = new Spinner().inject(buttonsBar).show();
 
@@ -144,10 +143,11 @@
                                                 });
 
                                                 function loadGroupUsers(groupSelect) {
-													usersIconsCotaninerElement.innerHTML = '';
+													//imgContainer.innerHTML = '';
+													
                                                     widget.communityUsersWithoutGroup = [];
 	
-													console.log(widget.communityUsers);
+													//console.log(widget.communityUsers);
 													
                                                     if (widget.changeToggle.isChecked()) {
                                                         let selectedUserGroupId = groupSelect.getValue()[0];
@@ -160,13 +160,11 @@
                                                         let notExistedUsersCount = 0;
 
                                                         function addUsersToContainer(members) {
+														
+															imgContainer.innerHTML = ''
                                                             widget.communityUsers.forEach(function(user) {
                                                                 if (user) {
                                                                     var isUserExist = members.filter(function(groupUser) {
-                                                                        //var isSameName = user.first_name.toLowerCase() === groupUser.givenName.member[0].toLowerCase() 
-                                                                        //	&& user.last_name.toLowerCase() === groupUser.familyName.member[0].toLowerCase();
-
-                                                                        //return isSameName || ('iam:' + user.login) === groupUser['@id'];
                                                                         return ('iam:' + user.login) === groupUser['@id'];
                                                                     }).length > 0;
 
@@ -447,7 +445,6 @@
                                         },
                                         onFailure: function(e) {
 											addUserToGroup(++index);
-                                            console.log('WTF user', item);
                                         }
                                     }
                                     WAFData.authenticatedRequest(addGroupUsersQuery, requestAddGroupUsers);

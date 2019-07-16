@@ -394,6 +394,7 @@
                                 className: 'primary fullwidth',
                                 value: 'Изменить группу'
                             })
+							widget.loadButton = button;
 
                             button.addEvent('onClick', function() {
                                 // -----------------------------------------------------------
@@ -401,6 +402,8 @@
                                 spinner.show();
                                 widget.communitySelect.disable();
                                 widget.groupSelect.disable();
+								widget.loadButton.disable();
+								
 
                                 var addGroupUsersQuery = userGroupURL + '/3drdfpersist/v0/resources/' +
                                     widget.selectedUserGroupId + '?$mask=dsaccess:Mask.GroupUI.Members&tenant=dstenant:' +
@@ -418,6 +421,7 @@
                                         spinner.hide();
                                         widget.communitySelect.enable();
                                         widget.groupSelect.enable();
+										widget.loadButton.disable();
                                         widget.loadingIndex = 0;
                                         return;
                                     }

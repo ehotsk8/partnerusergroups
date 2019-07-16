@@ -178,8 +178,7 @@
 
 
                                                             });
-
-															widget.loadButton.enable();
+															
                                                             usersElement.style.display = 'block';
                                                             usersCountElement.innerHTML = 'Отсутствуют в группе ' + notExistedUsersCount + ' из ' + widget.communityUsers.length;
                                                             notExistedUsersCount = 0;
@@ -247,6 +246,7 @@
                                                             var selectedUserGroupId = groupSelect.getValue()[0];
                                                             if (selectedUserGroupId !== '') {
                                                                 loadGroupUsers(groupSelect);
+																widget.loadButton.enable();
                                                             }
 
                                                         }

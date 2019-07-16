@@ -179,6 +179,7 @@
 
                                                             });
 
+															widget.loadButton.enable();
                                                             usersElement.style.display = 'block';
                                                             usersCountElement.innerHTML = 'Отсутствуют в группе ' + notExistedUsersCount + ' из ' + widget.communityUsers.length;
                                                             notExistedUsersCount = 0;
@@ -365,6 +366,7 @@
                                         loadUsers(communitySelect.getValue()[0]);
 
                                         usersElement.style.display = 'none';
+										widget.loadButton.disable();
                                         widget.groupSelect.select(0);
                                     }
                                 }
